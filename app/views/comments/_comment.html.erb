@@ -1,0 +1,11 @@
+<p>
+	<strong>Posted <%= time_ago_in_words(comment.created_at) %> ago</strong><br />
+	<%= h(comment.body) %>
+	
+	<% if session[:user_id] %>
+    <div class="fpp_footer">
+    	<%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>
+    </div>
+  <% end %>
+	
+</p>

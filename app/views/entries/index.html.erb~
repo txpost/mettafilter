@@ -1,0 +1,6 @@
+
+<h1>i am introvert dot org</h1>
+
+<%= render :partial => @entries %>
+
+<%= link_to 'New entry', new_entry_path %>

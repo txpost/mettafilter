@@ -1,0 +1,22 @@
+<h2><%= h(@entry.title) %></h2>
+<%= simple_format h(@entry.body) %>
+
+<% if session[:user_id] %>
+  <div class="fpp_footer">
+    <%= link_to 'Edit', edit_entry_path(@entry) %> |
+    <%= link_to 'Destroy', @entry, :method => :delete, :confirm => "Are you sure?" %> |
+  </div>
+<% end %>
+
+<div id="comments">
+  <h3>Comments</h3>
+	<%= render :partial => @entry.comments %>
+</div>
+
+<% remote_form_for [@entry, Comment.new] do |f| %>
+	<p>
+		<%= f.label :body, "New Comment" %><br />
+		<%= f.text_area :body %>
+	</p>
+	<p><%= f.submit "Add Comment" %></p>
+<% end %>

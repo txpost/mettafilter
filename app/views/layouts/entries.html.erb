@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Entries: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+	<%= auto_discovery_link_tag :atom, entries_path(:atom) %>
+	<%= javascript_include_tag :all %>
+</head>
+<body>
+
+
+<div class="container">
+  
+  <div class="header">
+    i am introvert . org
+  </div>
+
+  <div class="main">
+    <%= link_to 'home', entries_path %> |
+      <% if session[:user_id] %>
+        <%= link_to 'new entry', new_entry_path %> |
+        <%= link_to 'logout', :controller => 'admin', :action => 'logout' %>
+      <% else %>
+        <%= link_to 'login', :controller => 'admin', :action => 'login' %>
+      <% end %>
+    <br /><br />
+    <p style="color: green"><%= flash[:notice] %></p>
+
+    <%= yield %>
+  </div>
+</div>
+
+</body>
+</html>

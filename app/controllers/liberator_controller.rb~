@@ -1,0 +1,14 @@
+class LiberatorController < ApplicationController
+	def hello
+		
+	end
+
+	def create
+		create_input = params[:create]
+	end
+
+	def play
+		
+	end
+
+end

@@ -1,0 +1,9 @@
+<h1>Gunga Galunga!</h1>
+
+<% for each in @entries %>
+  <div >
+    <%= each.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+    <%= link_to h(each.title), each %>
+    <%= each.comments_count %> comments
+  </div>
+<% end %>

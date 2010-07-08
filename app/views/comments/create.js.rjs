@@ -1,0 +1,2 @@
+page.insert_html :bottom, :comments, :partial => @comment
+page[:new_comment].reset
