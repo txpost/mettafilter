@@ -1,10 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :users
-
+  map.resources :favorites
+  map.resources :tags
+  map.resources :users, :has_many => :favorites
 	map.resources :comments
+  map.resources :entries, :has_many => [:comments, :favorites]
 
-  map.resources :entries, :has_many => :comments
-
+  map.search "search", :controller => 'tags', :action => 'show'
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

@@ -1,11 +1,17 @@
+<!-- 
 <p>
   <h2><%= link_to_unless_current h(entry.title), entry %></h2>
 </p>
+-->
+
+
+<h2><%= h(entry.created_at.strftime("%B %d")) %></h2>
+<% stamp = h(entry.created_at.strftime("%d")) %>
 
 <p>
-  <%= simple_format h(entry.body) %>
+  <%= simple_format sanitize_html(entry.body) %>
   <div class="fpp_footer">
-    Posted <%= time_ago_in_words(entry.created_at) %> ago |
+    Posted at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
     <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
   </div>
 </p>

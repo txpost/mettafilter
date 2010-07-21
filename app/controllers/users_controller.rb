@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :authorize, :except => [:new, :create, :show]
+  
   # GET /users
   # GET /users.xml
   def index
@@ -13,7 +15,15 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    @user = User.find(params[:id])
+    @user = User.find(:first, :conditions => ["name = ?", params[:user_name]])
+    @user_entries = Entry.find( :all, 
+                                :conditions => ["created_by = ?", params[:user_name]],
+                                :order => "created_at DESC")
+    @user_comments = Comment.find ( :all,
+                                    :conditions => ["created_by =?", params[:user_name]],
+                                    :order => "created_at DESC",
+                                    :include => :entry)
+    @user_favorites = @user.favorites
 
     respond_to do |format|
       format.html # show.html.erb
@@ -45,7 +55,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = "User #{@user.name} was successfully created."
-        format.html { redirect_to(:action => 'index') }
+        format.html { redirect_to(:controller => 'entries', :action => 'index') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -82,4 +92,15 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  protected
+  
+  def authorize
+    unless User.find_by_id(session[:user_id])
+      session[:original_uri] = request.request_uri
+      flash[:notice] = "Please log in"
+      redirect_to :controller => 'admin', :action => 'login'
+    end
+  end
+  
 end

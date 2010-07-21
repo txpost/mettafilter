@@ -1,10 +1,30 @@
 class EntriesController < ApplicationController
-    before_filter :authorize, :except => [:index, :show]
+  uses_tiny_mce :options => { :theme => 'advanced', 
+                              :theme_advanced_buttons1 => 'bold,italic,link,unlink',
+                              :theme_advanced_buttons2 => '',
+                              :theme_advanced_buttons3 => '',
+                              :relative_urls => false }
+  before_filter :authorize, :except => [:index, :show]
   # before_filter :authenticate, :except => [:index, :show]
 	# GET /entries
   # GET /entries.xml
   def index
-    @entries = Entry.all(:order => "created_at DESC")
+# @entries = Entry.find(:all, :order => "created_at DESC")
+    @entries = Entry.paginate :page => params[:page], 
+                              :per_page => 15, 
+                              :order => "created_at DESC",
+                              :conditions => ["created_by != 'sidebar'"] 
+    @entry_days = @entries.group_by { |e| e.created_at.strftime("%B %d")}
+    @comments = Comment.find(:all, 
+                              :include => :entry, 
+                              :order => "created_at DESC",
+                              :limit => 10)
+    @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
+                                               session[:user_id]] )
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
     
     respond_to do |format|
       format.html # index.html.erb
@@ -13,12 +33,12 @@ class EntriesController < ApplicationController
 			format.atom
     end
   end
-
+  
   # GET /entries/1
   # GET /entries/1.xml
   def show
     @entry = Entry.find(params[:id])
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @entry }

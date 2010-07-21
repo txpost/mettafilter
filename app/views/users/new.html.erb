@@ -3,28 +3,25 @@
 
 <% form_for(@user) do |f| %>
   <%= f.error_messages %>
-
-  <fieldset>
-  <legend>Enter User Details</legend>
   
-  <p>
-    <%= f.label :name %><br />
+  <div>
     <%= f.text_field :name, :size => 40 %>
-  </p>
-  <p>
-    <%= f.label :user_password, 'Password' %><br />
+    <%= f.label :name %><br />
+  </div>
+  <div>
     <%= f.password_field :password, :size => 40 %>
-  </p>
-  <p>
-    <%= f.label :user_password_confirmation, 'Cofirm' %><br />
+    <%= f.label :user_password, 'Password' %><br />
+  </div>
+  <div>
     <%= f.password_field :password_confirmation, :size => 40 %>
-  </p>
-  <p>
-    <%= f.submit 'Add User', :class => "submit" %>
-  </p>
-  
-  </fieldset>
-  
+    <%= f.label :user_password_confirmation, 'Cofirm' %><br />
+  </div>
+  <br />
+  <div>
+    <%= f.submit 'Create', :class => "submit" %>
+  </div>
+   
 <% end %>
+<br />
 
-<%= link_to 'Back', users_path %>
+<%= link_to 'home', :controller => 'entries', :action => 'index' %>

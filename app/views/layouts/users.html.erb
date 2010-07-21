@@ -9,9 +9,19 @@
 </head>
 <body>
 
-<p style="color: green"><%= flash[:notice] %></p>
+<div class="container">
 
-<%= yield %>
+  <div class="header">
+    werd . org
+  </div>
+
+  <div class="main">
+    <p style="color: green"><%= flash[:notice] %></p>
+  
+    <%= yield %>
+  </div>
+  
+</div>
 
 </body>
 </html>

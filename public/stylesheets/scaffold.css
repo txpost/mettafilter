@@ -1,17 +1,39 @@
-body { background-color: white; color: #333; }
+body { background-color: #2E7B37; color: white; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size:   13px;
+  font-size:   14px;
 /*  line-height: 18px;*/
 }
+h2 { font-family: Georgia, "Times New Roman", serif; 
+     font-size: 20px; 
+     font-weight: normal }
+p { margin: 0;}
 
-.container { background-color: white; margin: -8px;}
-.header { background-color: #555; color: white; margin-bottom: 5px; 
-  padding: 3px 300px; font-size: 20px; }
-.main { padding: 0px 300px; }
-.fpp_footer { font-size: 9px; margin-bottom: 30px; }
-.comments { margin-top: 60px; }
+.container { background-color:white; margin: -8px; }
+.header_top { background-color: #2E7B37; color: white; text-align:right; }
+.header { background-color: #2E5B37; color: white; margin-bottom: 5px; 
+  padding: 5px 30px; font-size: 20px; }
+.main { padding: 0px 30px; width:80%; float:left }
+.entry_container { padding-left: 30px; }
+#sidehead { padding:0 10px 20px; width:13%; float:left; }
+#sidebar {  border-width: 1px 0 0 0; border-style:solid; 
+            background-color:#2E5B37; padding:0 10px; 
+            width:13%; float:right; font-size: 11px; }
+#sidebar p { font-size: 11px;}
+.sidebar_entry { margin: 0 0 10px 0; }
+.fpp_footer { font-size: 10px; margin: 5px 0 25px 0; }
+#comments { margin: 60px 0; }
+#welcome { width:200px; margin:auto; }
+.footer { margin-bottom:10px;}
+.css1 { font-size:1.0em; }
+.css2 { font-size:1.2em; }
+.css3 { font-size:1.4em; }
+.css4 { font-size:1.6em; }
+
+/*label { width:80px; float:left; text-align:right; display:block }*/
+/*input { margin-left:5px; }*/
+/*.form_right_justify {margin-left:80px; margin-top:3px;}*/
 
 pre {
   background-color: #eee;
@@ -20,7 +42,8 @@ pre {
 }
 
 a { color: #000; text-decoration: none;}
-a:visited { color: royalblue; }
+a:link { color: yellow; }
+a:visited { color: yellow; }
 a:hover { color: #fff; background-color:#000; }
 
 .fieldWithErrors {

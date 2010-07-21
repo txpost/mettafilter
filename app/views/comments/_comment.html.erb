@@ -1,6 +1,10 @@
 <p>
-	<strong>Posted <%= time_ago_in_words(comment.created_at) %> ago</strong><br />
-	<%= h(comment.body) %>
+	<strong>Posted <%= time_ago_in_words(comment.created_at) %> ago</strong>
+	by <%= link_to h(comment.created_by), :controller => 'users',
+                                        :action => 'show',
+                                        :params => { :user_name => comment.created_by } %> 
+  <br />
+	<%= sanitize_html(comment.body) %>
 	
 	<% if session[:user_id] %>
     <div class="fpp_footer">

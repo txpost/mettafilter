@@ -1,13 +1,13 @@
-<p>
-  <b>Entry:</b>
-  <%=h @comment.entry_id %>
-</p>
-
-<p>
-  <b>Body:</b>
-  <%=h @comment.body %>
-</p>
-
-<%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= link_to 'Back', comments_path %>
+<% @comments.each do |comment| %>
+  <p>
+  <%= link_to h(comment.created_at.strftime("%B %d at %I:%M%P")), comment.entry %>
+  <%= comment.body %>
+  <%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>
+  <!--
+  <% if comment.created_at.mday() < 10 %>
+    <% comment.delete %>
+  <% end %>
+  -->
+  </p>
+<% end %>
 

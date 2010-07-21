@@ -7,3 +7,10 @@
     <%= each.comments_count %> comments
   </div>
 <% end %>
+
+<br /><br />
+<%= link_to 'home', entries_path %> |
+<%= link_to 'new entry', new_entry_path %> |
+<%= link_to 'logout', :controller => 'admin', :action => 'logout' %> |
+logged in as <%= link_to session[:user_name],
+                      :controller => 'admin', :action => 'index' %>

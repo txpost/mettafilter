@@ -4,33 +4,53 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>Entries: <%= controller.action_name %></title>
+  <title>"breathe, you are online"</title>
   <%= stylesheet_link_tag 'scaffold' %>
 	<%= auto_discovery_link_tag :atom, entries_path(:atom) %>
 	<%= javascript_include_tag :all %>
+	<%= include_tiny_mce_if_needed %>
 </head>
 <body>
 
 
 <div class="container">
   
+  <!--
+  <div class="header_top">
+    <%= link_to 'AskTheInnernet' %>
+  </div>
+  -->
+  
   <div class="header">
-    i am introvert . org
+    the innernet . org
   </div>
 
   <div class="main">
     <%= link_to 'home', entries_path %> |
       <% if session[:user_id] %>
         <%= link_to 'new entry', new_entry_path %> |
+        logged in as <%= link_to session[:user_name],
+                                          :controller => 'users',
+                                          :action => 'show',
+                                          :params => { :user_name => session[:user_name] } %> |
         <%= link_to 'logout', :controller => 'admin', :action => 'logout' %>
+        
       <% else %>
-        <%= link_to 'login', :controller => 'admin', :action => 'login' %>
+        <%= link_to 'login', :controller => 'admin', :action => 'login' %> |
+        <%= link_to 'register', :controller => 'users', :action => 'new' %>
       <% end %>
     <br /><br />
-    <p style="color: green"><%= flash[:notice] %></p>
 
-    <%= yield %>
+    <div>
+      <p style="color: aqua"><%= flash[:notice] %></p>
+
+      <%= yield %>
+    </div>
   </div>
+  
+  <%= yield :sidebar %>
+  
+  
 </div>
 
 </body>

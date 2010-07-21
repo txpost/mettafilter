@@ -1,18 +1,47 @@
 <p>
-  <b>Name:</b>
+  <b>User:</b>
   <%=h @user.name %>
 </p>
 
-<p>
-  <b>Hashed password:</b>
-  <%=h @user.hashed_password %>
-</p>
+<%= link_to 'home', :controller => 'entries', :action => 'index' %> |
+<% if session[:user_id] == @user.id %>
+  <%= link_to 'edit', edit_user_path(@user) %>
+<% end %>
+<br /><br />
 
-<p>
-  <b>Salt:</b>
-  <%=h @user.salt %>
-</p>
+<h3>Posts</h3>
+<% if @user_entries.count == 0 %>
+  no posts
+<% else %>
+  <% for entry in @user_entries %>
+    <div>
+      <%= entry.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+      <%= link_to h(entry.title), entry %>
+      <%= entry.comments_count %> comments
+    </div>
+  <% end %>
+<% end %>
 
+<h3>Comments</h3>
+<% if @user_comments.count == 0 %>
+  no comments
+<% else %>
+  <% for comment in @user_comments %>
+    <div>
+      <%= comment.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+      in <%= link_to (comment.entry.title), comment.entry %>
+    </div>
+  <% end %>
+<% end %>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<h3>Favorites</h3>
+<% if @user_favorites.count == 0 %>
+  no favorites
+<% else %>
+  <% for favorite in @user_favorites %>
+    <div>
+      made <%= link_to (favorite.entry.title), favorite.entry %> a favorite at
+      <%= favorite.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+    </div>
+  <% end %>
+<% end %>

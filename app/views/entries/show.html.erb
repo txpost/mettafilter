@@ -1,22 +1,40 @@
 <h2><%= h(@entry.title) %></h2>
-<%= simple_format h(@entry.body) %>
+<%= sanitize_html(@entry.body) %>
 
-<% if session[:user_id] %>
-  <div class="fpp_footer">
+<div class="fpp_footer">
+  <strong><%= @entry.title %></strong>
+  posted by <%= link_to h(@entry.created_by), :controller => 'users',
+                                                :action => 'show',
+                                                :params => { :user_name => @entry.created_by } %> 
+  at <%= h(@entry.created_at.strftime("%I:%M%P")) %>
+  
+  <% if session[:user_id] %>
     <%= link_to 'Edit', edit_entry_path(@entry) %> |
     <%= link_to 'Destroy', @entry, :method => :delete, :confirm => "Are you sure?" %> |
-  </div>
-<% end %>
+  <% end %>
+  
+  <% if @entry.tags.blank? %>
+    no tags for this post
+  <% else %>
+    tags: 
+    <% @entry.tags.each do |tag| %>
+      <%= link_to tag.name, :controller => 'tags', :action => 'show', :query => tag.name %>
+    <% end %>
+  <% end %>
+</div>
 
 <div id="comments">
   <h3>Comments</h3>
 	<%= render :partial => @entry.comments %>
-</div>
 
-<% remote_form_for [@entry, Comment.new] do |f| %>
-	<p>
-		<%= f.label :body, "New Comment" %><br />
-		<%= f.text_area :body %>
-	</p>
-	<p><%= f.submit "Add Comment" %></p>
+<% if session[:user_id] %>
+  <% form_for [@entry, Comment.new] do |f| %>
+  	<p>
+  		<%= f.label :body, "New Comment" %><br />
+  		<%= f.text_area :body, :class => 'mceEditor' %>
+  	</p>
+  	<p><%= f.submit 'Add Comment' %></p>
+  	<%= f.hidden_field :created_by, :value => session[:user_name] %>
+  <% end %>
 <% end %>
+</div>
