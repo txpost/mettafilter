@@ -1,0 +1,21 @@
+<h2>The Most Favored</h2>
+<br />
+
+<% @entries.each do |entry| %>
+  <% if entry.favorites.count > 0 %>
+    
+    <%= entry.body %>
+    <div class="fpp_footer">
+      <strong><%= entry.title %></strong>
+      posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                   :action => 'show',
+                                                   :params => { :user_name => entry.created_by } %> 
+      at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
+      <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>) |
+      <%= pluralize(h(entry.favorites.count), "favorite")	 %>
+    </div>
+    
+    <br />
+  <% end %>
+<% end %>
+

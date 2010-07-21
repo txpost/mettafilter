@@ -1,0 +1,22 @@
+<%= link_to '<< back', :back %>
+
+<h3>Entries tagged as "<%= params[:query] %>"</h3>
+<br />
+
+<% if @matches.blank? %>
+  no matches found
+<% else %>
+  <% @matches.each do |entry| %>
+    <%= entry.body %>
+    <div class="fpp_footer">
+      <strong><%= entry.title %></strong>
+      posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                   :action => 'show',
+                                                   :params => { :user_name => entry.created_by } %> 
+      at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
+      <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
+    </div>
+    
+    <br />
+  <% end %>
+<% end %>
