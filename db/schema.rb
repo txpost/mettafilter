@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100725152440) do
+ActiveRecord::Schema.define(:version => 20100725173606) do
 
   create_table "comments", :force => true do |t|
     t.integer  "entry_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20100725152440) do
     t.datetime "updated_at"
     t.integer  "comments_count", :default => 0
     t.string   "created_by"
+    t.string   "category"
   end
 
   create_table "favcoms", :force => true do |t|
@@ -38,14 +39,6 @@ ActiveRecord::Schema.define(:version => 20100725152440) do
   create_table "favorites", :force => true do |t|
     t.integer  "entry_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "questions", :force => true do |t|
-    t.integer  "entry_id"
-    t.integer  "user_id"
-    t.boolean  "answered",   :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -2,7 +2,11 @@
   <h2><%= day %></h2>
   <% for entry in @entry_days[day] %>
       
+    <% if entry.category == 'question' %>
+      <div class="question_container">
+    <% else %>
       <div class="entry_container">
+    <% end %>
         <%= sanitize_html(entry.body) %>
         
         <div class="fpp_footer">
@@ -11,8 +15,13 @@
                                                      :action => 'show',
                                                      :params => { :user_name => entry.created_by } %> 
           at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
-          <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
+          <% if entry.category == 'question' %>
+            <%= link_to "Answers", entry %> (<%= h(entry.comments_count) %>)
+          <% else %>
+            <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
+          <% end %>
           
+
           <% if session[:user_id] %>
             |
             <% flag = false %>
@@ -43,7 +52,7 @@
   <div id="sidehead">
     <%= link_to 'tags', :controller => 'tags', :action => 'index' %> |
     <%= link_to 'favs', :controller => 'favorites', :action => 'index' %> |
-    <%= link_to 'ask' %> |
+    <%= link_to 'Qs' %> |
     <%= link_to 'pics' %>
     <br /><br />
   </div>

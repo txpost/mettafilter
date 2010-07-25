@@ -5,6 +5,10 @@
   <% form_for(@entry) do |f| %>
     <%= f.error_messages %>
 
+    <%= f.label :category %><br />
+    <%= f.radio_button :category, :post, :checked => true %>post<br />
+    <%= f.radio_button :category, :question %>question<br />
+    <br />
     
     <%= f.label :title %><br />
     <%= f.text_field :title, :size => 72 %><br />

@@ -3,6 +3,7 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   
   has_many :entries
+  has_many :questions
   has_many :favorites
   has_many :favcoms
   

@@ -1,6 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :questions
-
   map.resources :favcoms
 
   map.resources :favorites

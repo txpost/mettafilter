@@ -1,17 +1,30 @@
-<!-- 
-<p>
-  <h2><%= link_to_unless_current h(entry.title), entry %></h2>
-</p>
--->
-
-
-<h2><%= h(entry.created_at.strftime("%B %d")) %></h2>
-<% stamp = h(entry.created_at.strftime("%d")) %>
-
-<p>
-  <%= simple_format sanitize_html(entry.body) %>
+<div class="entry_container">
+  <%= sanitize_html(entry.body) %>
+  
   <div class="fpp_footer">
-    Posted at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
+    "<strong><%= entry.title %></strong>" |
+    posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                :action => 'show',
+                                                :params => { :user_name => entry.created_by } %> 
+    at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
     <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
+
+    <% if session[:user_id] %>
+      |
+      <% flag = false %>
+      <% for favorite in @favored_by %>
+        <% if favorite.entry == entry %>
+          <%= pluralize(h(entry.favorites.count), "favorite")	 %>
+          <% flag = true %>
+          <% break %>
+        <% end %>
+      <% end %>
+      
+      <% if flag == false %>
+        <%= link_to "+",  :controller => 'favorites', 
+                          :action => 'new',
+                          :params => { :entry => entry, :user => session[:user_id] } %>      
+      <% end %>
+    <% end %>
   </div>
-</p>
+</div>

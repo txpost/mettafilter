@@ -2,28 +2,29 @@ body { background-color: #2E7B37; color: white; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size:   14px;
-/*  line-height: 18px;*/
+  font-size: 14px;
+/* line-height: 18px;*/
 }
-h2 { font-family: Georgia, "Times New Roman", serif; 
-     font-size: 20px; 
+h2 { font-family: Georgia, "Times New Roman", serif;
+     font-size: 20px;
      font-weight: normal }
 p { margin: 0;}
 
 .container { background-color:white; margin: -8px; }
 .header_top { background-color: #2E7B37; color: white; text-align:right; }
-.header { background-color: #2E5B37; color: white; margin-bottom: 5px; 
+.header { background-color: #2E3B37; color: white; margin-bottom: 5px;
   padding: 5px 30px; font-size: 20px; }
 .main { padding: 0px 30px; width:80%; float:left }
-.entry_container { padding-left: 30px; }
+.entry_container { margin-left: 20px; padding: 10px}
+.question_container { margin-left: 20px; padding: 10px; background-color: #2E6B37 }
 .new_entry { margin: 0 0 20px 20px; }
 #sidehead { padding:0 10px 20px; width:13%; float:left; }
-#sidebar {  border-width: 1px 0 0 0; border-style:solid; 
-            background-color:#2E5B37; padding:0 10px; 
+#sidebar { border-width: 1px 0 0 0; border-style:solid;
+            background-color:#2E3B37; padding:0 10px;
             width:13%; float:right; font-size: 11px; }
 #sidebar p { font-size: 11px;}
 .sidebar_entry { margin: 0 0 10px 0; }
-.fpp_footer { font-size: 10px; margin: 5px 0 25px 0; }
+.fpp_footer { font-size: 10px; margin: 5px 0 0 0; }
 .comments { margin: 20px 0 0 30px; }
 #new_comment { margin: 20px 0; }
 #welcome { width:200px; margin:auto; }
@@ -83,4 +84,3 @@ a:hover { color: #fff; background-color:#000; }
   font-size: 12px;
   list-style: square;
 }
-
