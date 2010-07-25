@@ -1,0 +1,13 @@
+<h1>New favcom</h1>
+
+<% form_for(@favcom) do |f| %>
+  <%= f.error_messages %>
+  
+  <%= f.submit 'Click to add to favorites!' %>
+  
+  <%= f.hidden_field :comment_id, :value => params[:comment] %>
+  <%= f.hidden_field :user_id, :value => params[:user] %>
+
+<% end %>
+
+<%= link_to 'Back', favcoms_path %>

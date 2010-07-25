@@ -3,7 +3,8 @@ class EntriesController < ApplicationController
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',
                               :theme_advanced_buttons2 => '',
                               :theme_advanced_buttons3 => '',
-                              :relative_urls => false }
+                              :relative_urls => false,
+                              :width => '600px' }
   before_filter :authorize, :except => [:index, :show]
   # before_filter :authenticate, :except => [:index, :show]
 	# GET /entries
@@ -21,6 +22,8 @@ class EntriesController < ApplicationController
                               :limit => 10)
     @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
                                                session[:user_id]] )
+    @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
+                                                session[:user_id]] )
     @sidebar = Entry.find(:all,
                             :conditions => ["created_by = 'sidebar'"],
                             :limit => 20,
@@ -38,6 +41,10 @@ class EntriesController < ApplicationController
   # GET /entries/1.xml
   def show
     @entry = Entry.find(params[:id])
+    @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
+                                               session[:user_id]] )
+    @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
+                                                session[:user_id]] )
     
     respond_to do |format|
       format.html # show.html.erb

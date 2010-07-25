@@ -1,25 +1,27 @@
-<h1>New entry</h1>
+  <%= link_to '<- Back', entries_path %><br />
+<h3>New entry</h3>
 
-<% form_for(@entry) do |f| %>
-  <%= f.error_messages %>
+<div class="new_entry">
+  <% form_for(@entry) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
+    
     <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </p>
-  <p>
+    <%= f.text_field :title, :size => 72 %><br />
+    <br />
+
     <%= f.label :body %><br />
     <%= f.text_area :body, :class => 'mceEditor' %>
-  </p>
-  <p>
-    <%= f.label :tag_list %><br />
-    <%= f.text_field :tag_list, :size => 80 %>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-  
-  <%= f.hidden_field :created_by, :value => session[:user_name] %>
-  
-<% end %>
+    <br />
 
-<%= link_to 'Back', entries_path %>
+    <%= f.label :tag_list %><br />
+    <%= f.text_field :tag_list, :size => 72 %><br />
+    <br />
+    
+    <%= f.submit 'Create' %>
+
+    <%= f.hidden_field :created_by, :value => session[:user_name] %>
+    
+  <% end %>
+
+</div>

@@ -1,0 +1,22 @@
+<h1>Listing favcoms</h1>
+
+<table>
+  <tr>
+    <th>Comment</th>
+    <th>User</th>
+  </tr>
+
+<% @favcoms.each do |favcom| %>
+  <tr>
+    <td><%=h favcom.comment_id %></td>
+    <td><%=h favcom.user_id %></td>
+    <td><%= link_to 'Show', favcom %></td>
+    <td><%= link_to 'Edit', edit_favcom_path(favcom) %></td>
+    <td><%= link_to 'Destroy', favcom, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New favcom', new_favcom_path %>

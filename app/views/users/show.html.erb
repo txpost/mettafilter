@@ -1,13 +1,12 @@
-<p>
-  <b>User:</b>
-  <%=h @user.name %>
-</p>
-
 <%= link_to 'home', :controller => 'entries', :action => 'index' %> |
 <% if session[:user_id] == @user.id %>
   <%= link_to 'edit', edit_user_path(@user) %>
 <% end %>
 <br /><br />
+
+<b>User:</b>
+<%=h @user.name %>
+
 
 <h3>Posts</h3>
 <% if @user_entries.count == 0 %>
@@ -34,7 +33,7 @@
   <% end %>
 <% end %>
 
-<h3>Favorites</h3>
+<h3>Favorite Posts</h3>
 <% if @user_favorites.count == 0 %>
   no favorites
 <% else %>
@@ -42,6 +41,33 @@
     <div>
       made <%= link_to (favorite.entry.title), favorite.entry %> a favorite at
       <%= favorite.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+      <%= link_to 'Destroy', favorite, :confirm => 'Are you sure?', :method => :delete %>
     </div>
   <% end %>
 <% end %>
+
+<h3>Favorite Comments</h3>
+<% if @user_favcoms.count == 0 %>
+  no favorites
+<% else %>
+  <% for favcom in @user_favcoms %>
+    
+      <%= favcom.comment.body %>
+      <div class="fpp_footer">
+        favored in
+        <%= link_to favcom.comment.entry.title, :controller => 'entries',
+                                    :action => 'show',
+                                    :id => favcom.comment.entry_id,
+                                    :anchor => favcom.comment_id %>
+        at <%= favcom.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+         
+                              
+        <%= link_to 'Destroy', favcom, :confirm => 'Are you sure?', :method => :delete %>
+      </div>
+    
+    <br />
+  <% end %>
+<% end %>
+
+<div class="footer">
+</div>

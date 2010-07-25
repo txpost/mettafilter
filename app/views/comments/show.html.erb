@@ -1,13 +1,17 @@
 <% @comments.each do |comment| %>
-  <p>
-  <%= link_to h(comment.created_at.strftime("%B %d at %I:%M%P")), comment.entry %>
+  
   <%= comment.body %>
+  posted by <%= link_to h(comment.created_at.strftime("%B %d at %I:%M%P")), comment.entry %>
+  posted by <%= link_to h(comment.created_by), :controller => 'users',
+                                                :action => 'show',
+                                                :params => { :user_name => comment.created_by } %> 
+  at <%= h(comment.created_at.strftime("%I:%M%P on %B %d")) %>
   <%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>
   <!--
   <% if comment.created_at.mday() < 10 %>
     <% comment.delete %>
   <% end %>
   -->
-  </p>
+
 <% end %>
 

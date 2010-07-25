@@ -1,15 +1,37 @@
-<p>
-	<strong>Posted <%= time_ago_in_words(comment.created_at) %> ago</strong>
-	by <%= link_to h(comment.created_by), :controller => 'users',
-                                        :action => 'show',
-                                        :params => { :user_name => comment.created_by } %> 
-  <br />
-	<%= sanitize_html(comment.body) %>
-	
-	<% if session[:user_id] %>
-    <div class="fpp_footer">
-    	<%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>
-    </div>
+
+<a name="<%= comment.id %>" ></a>
+<%= sanitize_html(comment.body) %><br />
+
+<div class="fpp_footer">
+  posted by <%= link_to h(comment.created_by), :controller => 'users',
+                                            :action => 'show',
+                                            :params => { :user_name => comment.created_by } %> 
+  at <%= h(comment.created_at.strftime("%I:%M%P on %B %d")) %>
+  <% if session[:user_id] %>
+    |
+    <% flag = false %>
+    <% if @favcomed_by.blank? %>
+      <%= link_to "+",  :controller => 'favcoms', 
+                        :action => 'new',
+                        :params => { :comment => comment, :user => session[:user_id] } %>
+      <% flag = true %>
+    <% else %>
+      <% for favcom in @favcomed_by %>
+        <% if favcom.comment == comment %>
+          <%= pluralize(h(comment.favcoms.count), "favorite")	 %>
+          <% flag = true %>
+          <% break %>
+        <% end %>
+      <% end %>
+    <% end %>
+      
+    <% if flag == false %>
+      <%= link_to "+",  :controller => 'favcoms', 
+                        :action => 'new',
+                        :params => { :comment => comment, :user => session[:user_id] } %>      
+    <% end %>
   <% end %>
-	
-</p>
+	<!--
+	<%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>
+  -->
+</div>

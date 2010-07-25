@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :questions
+
+  map.resources :favcoms
+
   map.resources :favorites
   map.resources :tags
   map.resources :users, :has_many => :favorites

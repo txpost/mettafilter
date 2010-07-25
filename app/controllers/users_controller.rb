@@ -24,6 +24,7 @@ class UsersController < ApplicationController
                                     :order => "created_at DESC",
                                     :include => :entry)
     @user_favorites = @user.favorites
+    @user_favcoms = @user.favcoms
 
     respond_to do |format|
       format.html # show.html.erb

@@ -4,24 +4,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>Users: <%= controller.action_name %></title>
+  <title>Questions: <%= controller.action_name %></title>
   <%= stylesheet_link_tag 'scaffold' %>
 </head>
 <body>
 
-<div class="container">
+<p style="color: green"><%= flash[:notice] %></p>
 
-  <div class="header">
-    the innernet . org
-  </div>
-
-  <div class="main">
-    <p style="color: green"><%= flash[:notice] %></p>
-  
-    <%= yield %>
-  </div>
-  
-</div>
+<%= yield %>
 
 </body>
 </html>

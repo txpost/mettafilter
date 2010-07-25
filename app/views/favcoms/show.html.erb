@@ -1,0 +1,13 @@
+<p>
+  <b>Comment:</b>
+  <%=h @favcom.comment_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @favcom.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_favcom_path(@favcom) %> |
+<%= link_to 'Back', favcoms_path %>

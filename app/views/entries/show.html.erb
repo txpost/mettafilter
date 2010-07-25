@@ -2,16 +2,18 @@
 <%= sanitize_html(@entry.body) %>
 
 <div class="fpp_footer">
-  <strong><%= @entry.title %></strong>
+  <strong><%= @entry.title %></strong> |
   posted by <%= link_to h(@entry.created_by), :controller => 'users',
                                                 :action => 'show',
                                                 :params => { :user_name => @entry.created_by } %> 
-  at <%= h(@entry.created_at.strftime("%I:%M%P")) %>
+  at <%= h(@entry.created_at.strftime("%I:%M%P")) %> |
+  
   
   <% if session[:user_id] %>
     <%= link_to 'Edit', edit_entry_path(@entry) %> |
     <%= link_to 'Destroy', @entry, :method => :delete, :confirm => "Are you sure?" %> |
   <% end %>
+  
   
   <% if @entry.tags.blank? %>
     no tags for this post
@@ -21,20 +23,43 @@
       <%= link_to tag.name, :controller => 'tags', :action => 'show', :query => tag.name %>
     <% end %>
   <% end %>
+  
+  <% if session[:user_id] %>
+    |
+    <% flag = false %>
+    <% for favorite in @favored_by %>
+      <% if favorite.entry == @entry %>
+        <%= pluralize(h(@entry.favorites.count), "favorite")	 %>
+        <% flag = true %>
+        <% break %>
+      <% end %>
+    <% end %>
+    
+    <% if flag == false %>
+      <%= link_to "add to favorites",  :controller => 'favorites', 
+                        :action => 'new',
+                        :params => { :entry => @entry, :user => session[:user_id] } %>      
+    <% end %>
+  <% end %>
 </div>
 
-<div id="comments">
-  <h3>Comments</h3>
-	<%= render :partial => @entry.comments %>
-
-<% if session[:user_id] %>
-  <% form_for [@entry, Comment.new] do |f| %>
-  	<p>
-  		<%= f.label :body, "New Comment" %><br />
-  		<%= f.text_area :body, :class => 'mceEditor' %>
-  	</p>
-  	<p><%= f.submit 'Add Comment' %></p>
-  	<%= f.hidden_field :created_by, :value => session[:user_name] %>
+<div class="comments">
+  <% if @entry.comments.blank? %>
+	  no comments to display
+	<% else %>
+  	<%= render :partial => @entry.comments %>
   <% end %>
-<% end %>
+  
+  <div id="new_comment">
+    <% if session[:user_id] %>
+      <% form_for [@entry, Comment.new] do |f| %>
+      	<p>
+      		<%= f.label :body, "New Comment" %><br />
+      		<%= f.text_area :body, :class => 'mceEditor' %>
+      	</p>
+      	<p><%= f.submit 'Add Comment' %></p>
+      	<%= f.hidden_field :created_by, :value => session[:user_name] %>
+      <% end %>
+    <% end %>
+  </div>
 </div>

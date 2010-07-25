@@ -25,7 +25,7 @@
             <% end %>
             
             <% if flag == false %>
-              <%= link_to "add to favorites",  :controller => 'favorites', 
+              <%= link_to "+",  :controller => 'favorites', 
                                 :action => 'new',
                                 :params => { :entry => entry, :user => session[:user_id] } %>      
             <% end %>
