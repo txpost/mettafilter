@@ -1,4 +1,4 @@
-<h4>Welcome to the tag cloud!</h4>
+<h2>Soar like a crow amongst the tag cloud!</h2>
 
 <% form_tag(search_path, :method => "get") do %>
   <%= text_field_tag(:query) %>
@@ -7,5 +7,5 @@
 <br />
 
 <% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
-  <%= link_to tag.name, { :action => :show, :query => tag.name }, :class => css_class %>
+  <%= link_to tag.name + " ", { :action => :show, :query => tag.name }, :class => css_class %>
 <% end %>

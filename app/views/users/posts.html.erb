@@ -1,0 +1,32 @@
+<h2>Posts by <%= link_to @user.name, :controller => 'users', 
+                                     :action => 'show', 
+                                     :user_name => @user.name %></h2>
+<% for entry in @user_entries %>
+  <div class="entry_container">
+    <%= sanitize_html(entry.body) %>
+    <% unless entry.more_body.blank? %>
+      <span class="fpp_footer">
+        [<%= link_to "more inside", entry %>]
+      </span>
+    <% end %>
+    <div class="fpp_footer">
+      "<strong><%= entry.title %></strong>" |
+      posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                  :action => 'show',
+                                                  :params => { :user_name => entry.created_by } %> 
+      on <%= h(entry.created_at.strftime("%B %d")) %> |
+      
+      <% if entry.category == 'question' %>
+        <%= link_to pluralize(h(entry.comments_count), " Answers"), entry %>
+      <% else %>
+        <%= link_to pluralize(h(entry.comments_count), " Comment"), entry %>
+      <% end %>
+      
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<div class="footer">
+  <%= will_paginate @user_entries %>
+</div>

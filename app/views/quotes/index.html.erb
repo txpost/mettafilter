@@ -1,0 +1,62 @@
+<% @entry_days.keys.each do |day| %>
+  <h2><%= day %></h2>
+  <% for entry in @entry_days[day] %>
+      
+      <div class="quote_container">
+    
+        <%= sanitize_html(entry.body) %>
+        
+        <div class="fpp_footer">
+          "<strong><%= entry.title %></strong>" |
+          posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                     :action => 'show',
+                                                     :params => { :user_name => entry.created_by } %> 
+          at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
+          <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
+
+          <% if session[:user_id] %>
+            |
+            <% flag = false %>
+            <% for favorite in @favored_by %>
+              <% if favorite.entry == entry %>
+                <%= pluralize(h(entry.favorites.count), "favorite")	 %>
+                <% flag = true %>
+                <% break %>
+              <% end %>
+            <% end %>
+            
+            <% if flag == false %>
+              <%= link_to "+",  :controller => 'favorites', 
+                                :action => 'new',
+                                :params => { :entry => entry, :user => session[:user_id] } %>      
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <br />
+  <% end %>
+<% end %>
+
+<div class="footer">
+  <%= will_paginate @entries %>
+</div>
+
+<% content_for :sidebar do %>
+  <div id="sidehead">
+    <%= link_to 'tags', :controller => 'tags', :action => 'index' %> |
+    <%= link_to 'favs', :controller => 'favorites', :action => 'index' %> |
+    <%= link_to 'Qs', :controller => 'entries', :action => 'qindex' %> |
+    <%= link_to 'pics' %>
+    <br /><br />
+  </div>
+
+  <div id="sidebar">
+    <h4>Sidebar says...</h4>
+    <% @sidebar.each do |entry| %>
+        <div class="sidebar_entry">
+          <strong><%= h(entry.created_at.strftime("%B %d")) %></strong><br />
+          <%= sanitize_html(entry.body) %>
+        </div>
+    <% end %>
+  </div>
+<% end %>

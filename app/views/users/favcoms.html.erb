@@ -1,0 +1,43 @@
+<h2>favorite comments for <%= link_to @user.name, :controller => 'users', 
+                            :action => 'show', 
+                            :user_name => @user.name %></h2>
+<% for favorite in @user_favcoms %>
+  <div class="entry_container">
+    <%= sanitize_html(favorite.comment.body) %>
+    <div class="fpp_footer">
+      posted by <%= link_to h(favorite.comment.created_by), :controller => 'users',
+                                                            :action => 'show',
+                                                            :params => { :user_name => favorite.comment.created_by } %> 
+      on <%= h(favorite.comment.created_at.strftime("%B %d")) %> in
+      <%= link_to favorite.comment.entry.title, :controller => 'entries',
+                                       :action => 'show',
+                                       :id => favorite.comment.entry_id,
+                                       :anchor => favorite.comment.id %> 
+      <% if session[:user_name] == @user.name %>
+        |
+        [<%= link_to 'remove favorite', favorite, :confirm => 'Are you sure?', :method => :delete %>]
+      <% end %>     
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<div class="footer">
+  <%= will_paginate @user_favcoms %>
+</div>
+
+<% for favcom in @user_favcoms %>
+  <%= favcom.comment.body %>
+  <div class="fpp_footer">
+    favored in
+    <%= link_to favcom.comment.entry.title, :controller => 'entries',
+                                            :action => 'show',
+                                            :id => favcom.comment.entry_id,
+                                            :anchor => favcom.comment_id %>
+    at <%= favcom.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
+    <% if session[:user_name] == @user.name %>
+      [<%= link_to 'remove', favcom, :confirm => 'Are you sure?', :method => :delete %>]
+    <% end %> 
+  </div>
+  <br />
+<% end %>

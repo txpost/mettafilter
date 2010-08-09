@@ -1,22 +1,47 @@
-<h1>Listing favcoms</h1>
+<h2>Favorite Comments</h2>
 
-<table>
-  <tr>
-    <th>Comment</th>
-    <th>User</th>
-  </tr>
+<%= link_to "favorite posts" , :controller => 'favorites', :action => 'index' %> |
+<%= link_to "favorite comments", :controller => 'favcoms', :action => 'index' %> |
+<%= link_to "most comments", :controller => 'comments', :action => 'index' %>
+<br /><br />
 
-<% @favcoms.each do |favcom| %>
-  <tr>
-    <td><%=h favcom.comment_id %></td>
-    <td><%=h favcom.user_id %></td>
-    <td><%= link_to 'Show', favcom %></td>
-    <td><%= link_to 'Edit', edit_favcom_path(favcom) %></td>
-    <td><%= link_to 'Destroy', favcom, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+<% @comments.each do |comment| %>
+
+    <div class="entry_container">
+      <%= sanitize_html(comment.body) %>
+      <div class="fpp_footer">
+        in <strong>"<%= comment.entry.title %>"</strong> |
+        posted by <%= link_to h(comment.created_by), :controller => 'users',
+                                                     :action => 'show',
+                                                     :params => { :user_name => comment.created_by } %> 
+        on <%= h(comment.created_at.strftime("%B %d")) %> |
+        
+        <%= pluralize(h(comment.favcoms.count), "favorite")	 %>
+        
+        <% if session[:user_id] %>
+        
+          <% flag = false %>
+          <% for favcom in @favcomed_by %>
+            <% if favcom.comment == comment %>
+              <% flag = true %>
+              <% break %>
+            <% end %>
+          <% end %>
+        
+          <% if flag == false %>
+            |
+            <%= link_to "+",  :controller => 'favcoms', 
+                              :action => 'new',
+                              :params => { :entry => entry, :user => session[:user_id] } %>      
+          <% end %>
+        <% end %>
+      </div>  
+    </div>
+    
+    <br />
+
 <% end %>
-</table>
 
-<br />
-
-<%= link_to 'New favcom', new_favcom_path %>
+<div class="footer">
+  <%= will_paginate @comments %>
+</div>

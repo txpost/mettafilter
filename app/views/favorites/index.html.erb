@@ -1,21 +1,57 @@
-<h2>The Most Favored</h2>
-<br />
+<h2>Favorite Posts</h2>
+
+<%= link_to "favorite posts" , :controller => 'favorites', :action => 'index' %> |
+<%= link_to "favorite comments", :controller => 'favcoms', :action => 'index' %> |
+<%= link_to "most comments", :controller => 'comments', :action => 'index' %>
+<br /><br />
 
 <% @entries.each do |entry| %>
-  <% if entry.favorites.count > 0 %>
+
+
     
-    <%= entry.body %>
-    <div class="fpp_footer">
-      <strong><%= entry.title %></strong>
-      posted by <%= link_to h(entry.created_by), :controller => 'users',
-                                                   :action => 'show',
-                                                   :params => { :user_name => entry.created_by } %> 
-      at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
-      <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>) |
-      <%= pluralize(h(entry.favorites.count), "favorite")	 %>
+    <% if entry.category == 'question' %>
+      <div class="question_container">
+    <% else %>
+      <div class="entry_container">
+    <% end %>
+      <%= sanitize_html(entry.body) %>
+      <div class="fpp_footer">
+        <strong>"<%= entry.title %>"</strong> |
+        posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                     :action => 'show',
+                                                     :params => { :user_name => entry.created_by } %> 
+        on <%= h(entry.created_at.strftime("%B %d")) %> |
+        <% if entry.category == 'question' %>
+          <%= link_to pluralize(h(entry.comments_count), " Answers"), entry %> |
+        <% else %>
+          <%= link_to pluralize(h(entry.comments_count), " Comment"), entry %> |
+        <% end %>
+        <%= pluralize(h(entry.favorites.count), "favorite")	 %>
+        
+        <% if session[:user_id] %>
+        
+          <% flag = false %>
+          <% for favorite in @favored_by %>
+            <% if favorite.entry == entry %>
+              <% flag = true %>
+              <% break %>
+            <% end %>
+          <% end %>
+        
+          <% if flag == false %>
+            |
+            <%= link_to "+",  :controller => 'favorites', 
+                              :action => 'new',
+                              :params => { :entry => entry, :user => session[:user_id] } %>      
+          <% end %>
+        <% end %>
+      </div>  
     </div>
     
     <br />
-  <% end %>
+
 <% end %>
 
+<div class="footer">
+  <%= will_paginate @entries %>
+</div>

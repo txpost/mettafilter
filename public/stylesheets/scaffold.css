@@ -1,38 +1,44 @@
-body { background-color: #2E7B37; color: white; }
+body { background-color: #FFFFFF; color: #555; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
 /* line-height: 18px;*/
 }
 h2 { font-family: Georgia, "Times New Roman", serif;
      font-size: 20px;
-     font-weight: normal }
+     font-weight: normal;}
 p { margin: 0;}
 
 .container { background-color:white; margin: -8px; }
 .header_top { background-color: #2E7B37; color: white; text-align:right; }
 .header { background-color: #2E3B37; color: white; margin-bottom: 5px;
   padding: 5px 30px; font-size: 20px; }
-.main { padding: 0px 30px; width:80%; float:left }
+.main { padding: 0px 30px; width:80%; float:left; }
 .entry_container { margin-left: 20px; padding: 10px}
-.question_container { margin-left: 20px; padding: 10px; background-color: #2E6B37 }
+.question_container { margin-left: 30px; padding: 10px; background-color: lightblue; color: #333 }
+.quote_container { margin-left: 30px; padding: 10px; background-color: #FFFF99; color: #333}
+.profile_container { border-width: 1px; border-style:solid; 
+                     margin: 20px 30px 0; padding: 20px }
 .new_entry { margin: 0 0 20px 20px; }
-#sidehead { padding:0 10px 20px; width:13%; float:left; }
-#sidebar { border-width: 1px 0 0 0; border-style:solid;
-            background-color:#2E3B37; padding:0 10px;
+.preview { margin-bottom: 20px; padding: 10px; background-color: aliceblue}
+.sidehead { padding:0 0 20px 10px; width:13%; float:left; }
+.sidebar { border-width: 1px 0 0 0; border-style:solid;
+            background-color:#DDD; padding:0 10px;
             width:13%; float:right; font-size: 11px; }
-#sidebar p { font-size: 11px;}
+.sidebar p { font-size: 11px;}
 .sidebar_entry { margin: 0 0 10px 0; }
 .fpp_footer { font-size: 10px; margin: 5px 0 0 0; }
 .comments { margin: 20px 0 0 30px; }
-#new_comment { margin: 20px 0; }
+.new_comments { margin: 20px 0; }
 #welcome { width:200px; margin:auto; }
 .footer { margin-bottom:10px;}
+.the_bottom { background-color: #2E3B37; color: white; margin: 10px -8px -8px -8px; padding:8px;}
+#flash { color:blue; margin-bottom: 10px;}
 .css1 { font-size:1.0em; }
-.css2 { font-size:1.2em; }
-.css3 { font-size:1.4em; }
-.css4 { font-size:1.6em; }
+.css2 { font-size:1.5em; }
+.css3 { font-size:2.0em; }
+.css4 { font-size:2.5em; }
 
 /*label { width:80px; float:left; text-align:right; display:block }*/
 /*input { margin-left:5px; }*/
@@ -44,9 +50,19 @@ pre {
   font-size: 11px;
 }
 
+.header a { color: #FFF; text-decoration: none;}
+.header a:link { color: #FFF; }
+.header a:visited { color: #FFF; }
+.header a:hover { color: #FFF; background-color:#2E3B37 }
+
+.sidebar a { color: #000; text-decoration: none;}
+.sidebar a:link { color: darkred; }
+.sidebar a:visited { color: darkred; }
+.sidebar a:hover { color: #fff; background-color:#000; }
+
 a { color: #000; text-decoration: none;}
-a:link { color: yellow; }
-a:visited { color: yellow; }
+a:link { color: darkred; }
+a:visited { color: darkred; }
 a:hover { color: #fff; background-color:#000; }
 
 .fieldWithErrors {

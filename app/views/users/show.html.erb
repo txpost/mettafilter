@@ -1,73 +1,65 @@
-<%= link_to 'home', :controller => 'entries', :action => 'index' %> |
 <% if session[:user_id] == @user.id %>
-  <%= link_to 'edit', edit_user_path(@user) %>
+  <%= link_to 'edit profile', edit_user_path(@user) %>
 <% end %>
-<br /><br />
 
-<b>User:</b>
-<%=h @user.name %>
+<div class="profile_container">
 
-
-<h3>Posts</h3>
-<% if @user_entries.count == 0 %>
-  no posts
-<% else %>
-  <% for entry in @user_entries %>
-    <div>
-      <%= entry.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
-      <%= link_to h(entry.title), entry %>
-      <%= entry.comments_count %> comments
-    </div>
+  <% unless @user.full_name.blank? %>
+    <%= sanitize_html(@user.full_name) %> aka
   <% end %>
-<% end %>
-
-<h3>Comments</h3>
-<% if @user_comments.count == 0 %>
-  no comments
-<% else %>
-  <% for comment in @user_comments %>
-    <div>
-      <%= comment.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
-      in <%= link_to (comment.entry.title), comment.entry %>
-    </div>
+  
+  <%=h @user.name %>
+  <br />
+  
+  <% if @user.name == session[:user_name] %>
+    <%= sanitize_html(@user.email) %>
   <% end %>
-<% end %>
-
-<h3>Favorite Posts</h3>
-<% if @user_favorites.count == 0 %>
-  no favorites
-<% else %>
-  <% for favorite in @user_favorites %>
-    <div>
-      made <%= link_to (favorite.entry.title), favorite.entry %> a favorite at
-      <%= favorite.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
-      <%= link_to 'Destroy', favorite, :confirm => 'Are you sure?', :method => :delete %>
-    </div>
+  <br /><br />
+  
+  <% unless @user.photo_file_name.blank? %>
+    <%= image_tag @user.photo.url(:small) %>
+    <br /><br />
   <% end %>
-<% end %>
-
-<h3>Favorite Comments</h3>
-<% if @user_favcoms.count == 0 %>
-  no favorites
-<% else %>
-  <% for favcom in @user_favcoms %>
+  
+  <% unless @user.about.blank? %>
+    "<%= sanitize_html(@user.about) %>"
+  <% end %>
+  <br /><br />
+  
+  <% if @user_entries.count == 0 %>
+    no posts
+  <% else %>
+    <%= link_to @user_entries.count,  :controller => 'users', 
+                                      :action => 'posts',
+                                      :user_name => @user.name %> posts
+  <% end %>
+  <br />
+  <% if @user_comments.count == 0 %>
+    no comments
+  <% else %>
+    <%= link_to @user_comments.count, :controller => 'users',
+                                      :action => 'comments',
+                                      :user_name => @user.name %> comments
+  <% end %>
+  <br />
+  <% if @user_favorites.count == 0 %>
+    no favorites
+  <% else %>
+    <%= link_to @user_favorites.count, :controller => 'users',
+                                       :action => 'favorites',
+                                       :user_name => @user.name %> favorite posts
+  <% end %>
+  <br />
+  <% if @user_favcoms.count == 0 %>
+    no favorites
+  <% else %>
+    <%= link_to @user_favcoms.count, :controller => 'users',
+                                     :action => 'favcoms',
+                                     :user_name => @user.name %> favorite comments
     
-      <%= favcom.comment.body %>
-      <div class="fpp_footer">
-        favored in
-        <%= link_to favcom.comment.entry.title, :controller => 'entries',
-                                    :action => 'show',
-                                    :id => favcom.comment.entry_id,
-                                    :anchor => favcom.comment_id %>
-        at <%= favcom.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
-         
-                              
-        <%= link_to 'Destroy', favcom, :confirm => 'Are you sure?', :method => :delete %>
-      </div>
-    
-    <br />
   <% end %>
-<% end %>
+  
+</div>
 
 <div class="footer">
 </div>

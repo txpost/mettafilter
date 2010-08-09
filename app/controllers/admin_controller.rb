@@ -1,7 +1,11 @@
 class AdminController < ApplicationController
-  layout 'users'
+  layout 'entries'
   
-  def login    
+  def login
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")  
     session[:user_id] = nil
     session[:user_name] = nil
     if request.post?
@@ -20,7 +24,7 @@ class AdminController < ApplicationController
     session[:user_id] = nil
     session[:user_name] = nil
     flash[:notice] = "Logged out"
-    redirect_to :controller => 'entries', :action => 'index'
+    redirect_to :back
   end
 
   def index

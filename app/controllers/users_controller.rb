@@ -1,6 +1,14 @@
 class UsersController < ApplicationController
-  before_filter :authorize, :except => [:new, :create, :show]
-  
+  layout 'entries'
+  before_filter :authorize, :except => [:new, :create, :show, :posts, :comments, :favorites, :favcoms]
+  before_filter :side_bar, :param_user, :admin
+  uses_tiny_mce :options => { :theme => 'advanced', 
+                              :theme_advanced_buttons1 => 'bold,italic,link,unlink',
+                              :theme_advanced_buttons2 => '',
+                              :theme_advanced_buttons3 => '',
+                              :relative_urls => false,
+                              :width => '600px',
+                              :height => '200px' }
   # GET /users
   # GET /users.xml
   def index
@@ -23,15 +31,42 @@ class UsersController < ApplicationController
                                     :conditions => ["created_by =?", params[:user_name]],
                                     :order => "created_at DESC",
                                     :include => :entry)
-    @user_favorites = @user.favorites
-    @user_favcoms = @user.favcoms
-
+    @user_favorites = @user.favorites.find (:all, :order => "created_at DESC")
+    @user_favcoms = @user.favcoms.find (:all, :order => "created_at DESC")
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
     end
   end
-
+  
+  def posts
+    @user_entries = Entry.paginate :page => params[:page],
+                                   :per_page => 30,
+                                   :order => "created_at DESC",
+                                   :conditions => ["created_by = ?", params[:user_name]] 
+  end
+  
+  def comments
+    @user_comments = Comment.paginate :page => params[:page],
+                                      :per_page => 30,
+                                      :order => "created_at DESC",
+                                      :include => :entry,
+                                      :conditions => ["created_by = ?", params[:user_name]]
+  end
+  
+  def favorites
+    @user_favorites = @user.favorites.paginate :page => params[:page],
+                                               :per_page => 30,
+                                               :order => "created_at DESC"                                               
+  end
+  
+  def favcoms
+    @user_favcoms = @user.favcoms.paginate :page => params[:page],
+                                               :per_page => 30,
+                                               :order => "created_at DESC"
+  end
+  
   # GET /users/new
   # GET /users/new.xml
   def new
@@ -72,8 +107,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = "User #{@user.name} was successfully created."
-        format.html { redirect_to(:action => 'index') }
+        flash[:notice] = "User #{@user.name} was successfully updated."
+        format.html { redirect_to(:action => 'show', :user_name => session[:user_name]) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -89,12 +124,27 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      format.html { redirect_to(entries_url) }
       format.xml  { head :ok }
     end
   end
   
   protected
+  
+  def side_bar
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
+  end
+  
+  def param_user
+    @user = User.find(:first, :conditions => ["name = ?", params[:user_name]])
+  end
+  
+  def admin
+    @admin = User.find_by_name("trev")
+  end
   
   def authorize
     unless User.find_by_id(session[:user_id])

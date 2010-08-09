@@ -1,6 +1,11 @@
 <h2><%= h(@entry.title) %></h2>
 <%= sanitize_html(@entry.body) %>
 
+<% unless @entry.more_body.blank? %>
+  <hr>
+  <%= sanitize_html(@entry.more_body) %>
+<% end %>
+
 <div class="fpp_footer">
   <strong><%= @entry.title %></strong> |
   posted by <%= link_to h(@entry.created_by), :controller => 'users',
@@ -9,9 +14,9 @@
   at <%= h(@entry.created_at.strftime("%I:%M%P")) %> |
   
   
-  <% if session[:user_id] %>
-    <%= link_to 'Edit', edit_entry_path(@entry) %> |
-    <%= link_to 'Destroy', @entry, :method => :delete, :confirm => "Are you sure?" %> |
+  <% if session[:user_name] == @admin.name %>
+    <%= link_to 'edit', edit_entry_path(@entry) %> |
+    <%= link_to 'remove', @entry, :method => :delete, :confirm => "Are you sure?" %> |
   <% end %>
   
   
@@ -36,7 +41,7 @@
     <% end %>
     
     <% if flag == false %>
-      <%= link_to "add to favorites",  :controller => 'favorites', 
+      <%= link_to "+",  :controller => 'favorites', 
                         :action => 'new',
                         :params => { :entry => @entry, :user => session[:user_id] } %>      
     <% end %>
@@ -50,16 +55,19 @@
   	<%= render :partial => @entry.comments %>
   <% end %>
   
-  <div id="new_comment">
+  <div class="new_comments">
     <% if session[:user_id] %>
-      <% form_for [@entry, Comment.new] do |f| %>
-      	<p>
-      		<%= f.label :body, "New Comment" %><br />
-      		<%= f.text_area :body, :class => 'mceEditor' %>
-      	</p>
-      	<p><%= f.submit 'Add Comment' %></p>
+      <% form_for [@entry, Comment.new], :html => { :id => 'new_comment' } do |f| %>
+      	
+        <%= f.label :body, "New Comment" %><br />
+      	<%= f.text_area :body, :class => 'mceEditor' %><br />
+      	
+      	<%= f.submit 'add comment' %>
       	<%= f.hidden_field :created_by, :value => session[:user_name] %>
       <% end %>
     <% end %>
+    
   </div>
+  
 </div>
+  

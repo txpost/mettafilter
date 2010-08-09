@@ -9,26 +9,28 @@
 	<%= auto_discovery_link_tag :atom, entries_path(:atom) %>
 	<%= javascript_include_tag :all %>
 	<%= include_tiny_mce_if_needed %>
+	<script src="javascripts/prototype.js" type="text/javascript"></script>
+	<script src="javascripts/scriptaculous.js" type="text/javascript"></script>
 </head>
 <body>
 
 
 <div class="container">
-  
-  <!--
-  <div class="header_top">
-    <%= link_to 'AskTheInnernet' %>
-  </div>
-  -->
-  
+    
   <div class="header">
-    the innernet . org
+    <%= link_to 'MettaFilter', :controller => 'entries', :action => 'index' %>
+    <span class="fpp_footer">
+    | <%= link_to 'questions', :controller => 'questions', :action => 'index' %>
+    | <%= link_to 'quotes', :controller => 'quotes', :action => 'index' %>
+    | <%= link_to 'sequences', :controller => 'sequences', :action => 'index' %>
+    </span>
   </div>
 
   <div class="main">
     <%= link_to 'home', entries_path %> |
       <% if session[:user_id] %>
         <%= link_to 'new entry', new_entry_path %> |
+        <%= link_to 'new sequence', new_sequence_path %> |
         logged in as <%= link_to session[:user_name],
                                           :controller => 'users',
                                           :action => 'show',
@@ -42,15 +44,37 @@
     <br /><br />
 
     <div>
-      <p style="color: aqua"><%= flash[:notice] %></p>
-
+      <% if flash[:notice] %>
+        <div id="flash"><%= flash[:notice] %></div>
+      <% end %>
+      
       <%= yield %>
     </div>
+
   </div>
   
-  <%= yield :sidebar %>
-  
-  
+  <div class="sidehead">
+    <%= link_to 'tags', :controller => 'tags', :action => 'index' %> |
+    <%= link_to 'sort', :controller => 'favorites', :action => 'index' %>
+    
+    <br /><br />
+  </div>
+
+  <div class="sidebar">
+    <h4>Sidebar says...</h4>
+    <% @sidebar.each do |entry| %>
+        <div class="sidebar_entry">
+          <strong><%= h(entry.created_at.strftime("%B %d")) %></strong><br />
+          <%= sanitize_html(entry.body) %>
+        </div>
+    <% end %>
+  </div>
+    
+</div>
+
+<br clear="all">
+<div class="the_bottom">
+  the footer
 </div>
 
 </body>

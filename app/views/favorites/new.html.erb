@@ -1,15 +1,14 @@
-<h1>New favorite</h1>
+<h2>Add the following post to your favorites?</h2>
+
+<%= sanitize_html(@entry.body) %>
+<br /><br />
 
 <% form_for(@favorite) do |f| %>
   <%= f.error_messages %>
   
-  <p>
-    <%= f.submit 'Click to add to favorites!' %>
-  </p>
+  <%= f.submit 'Yep, add to favorites!' %>
   
   <%= f.hidden_field :entry_id, :value => params[:entry] %>
   <%= f.hidden_field :user_id, :value => params[:user] %>
   
 <% end %>
-
-<%= link_to 'Back', favorites_path %>

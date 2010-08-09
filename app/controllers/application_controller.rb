@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   before_filter :authorize, :except => :login
+  before_filter :set_user_time_zone
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -17,6 +18,17 @@ class ApplicationController < ActionController::Base
       flash[:notice] = "Please log in"
       redirect_to :controller => 'admin', :action => 'login'
     end
+  end
+  
+  private
+  
+  def current_user
+    @user = User.find_by_id(session[:user_id])
+  end
+  
+  def set_user_time_zone
+    @user = User.find_by_id(session[:user_id])
+    Time.zone = @user.time_zone unless @user.blank?
   end
   
 end

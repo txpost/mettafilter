@@ -1,0 +1,37 @@
+<h2>favorite posts for <%= link_to @user.name, :controller => 'users', 
+                            :action => 'show', 
+                            :user_name => @user.name %></h2>
+<% for favorite in @user_favorites %>
+  <div class="entry_container">
+    <%= sanitize_html(favorite.entry.body) %>
+    <% unless favorite.entry.more_body.blank? %>
+      <span class="fpp_footer">
+        [<%= link_to "more inside", favorite.entry %>]
+      </span>
+    <% end %>
+    <div class="fpp_footer">
+      "<strong><%= favorite.entry.title %></strong>" |
+      posted by <%= link_to h(favorite.entry.created_by), :controller => 'users',
+                                                          :action => 'show',
+                                                          :params => { :user_name => favorite.entry.created_by } %> 
+      on <%= h(favorite.entry.created_at.strftime("%B %d")) %> |
+      
+      <% if favorite.entry.category == 'question' %>
+        <%= link_to pluralize(h(favorite.entry.comments_count), " Answers"), favorite.entry %>
+      <% else %>
+        <%= link_to pluralize(h(favorite.entry.comments_count), " Comment"), favorite.entry %>
+      <% end %>
+      
+      <% if session[:user_name] == @user.name %>
+        |
+        [<%= link_to 'remove favorite', favorite, :confirm => 'Are you sure?', :method => :delete %>]
+      <% end %>
+      
+    </div>
+  </div>
+  <br />
+<% end %>
+
+<div class="footer">
+  <%= will_paginate @user_favorites %>
+</div>

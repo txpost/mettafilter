@@ -1,0 +1,22 @@
+<h1>Listing sequences</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+  </tr>
+
+<% @sequences.each do |sequence| %>
+  <tr>
+    <td><%=h sequence.title %></td>
+    <td><%=h sequence.description %></td>
+    <td><%= link_to 'Show', sequence %></td>
+    <td><%= link_to 'Edit', edit_sequence_path(sequence) %></td>
+    <td><%= link_to 'Destroy', sequence, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New sequence', new_sequence_path %>

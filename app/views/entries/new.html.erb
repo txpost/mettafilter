@@ -1,28 +1,70 @@
-  <%= link_to '<- Back', entries_path %><br />
-<h3>New entry</h3>
+<h3>New Post, Question, or Quote</h3>
 
 <div class="new_entry">
   <% form_for(@entry) do |f| %>
+    
+    <% if params[:preview_button] %>
+      <h2>Your preview:</h2>
+      <div class="preview">
+        <%= sanitize_html(@entry.body) %>
+
+        <% unless @entry.more_body.blank? %>
+          <hr>
+          <%= sanitize_html(@entry.more_body) %>
+        <% end %>
+
+        <div class="fpp_footer">
+          <strong><%= @entry.title %></strong> |
+          posted by <%= link_to h(@entry.created_by), :controller => 'users',
+                                                        :action => 'show',
+                                                        :params => { :user_name => @entry.created_by } %>
+        </div>
+      </div>
+    <% end %>
+        
     <%= f.error_messages %>
 
     <%= f.label :category %><br />
     <%= f.radio_button :category, :post, :checked => true %>post<br />
     <%= f.radio_button :category, :question %>question<br />
+    <%= f.radio_button :category, :quote %>quote (no links; from a book, class, etc)<br />
     <br />
     
-    <%= f.label :title %><br />
+    <%= f.label :title %>
+    <div class="fpp_footer">
+      Shows up in the footer of the post on the front page,
+      and at the top of the post's discussion page.
+    </div>
     <%= f.text_field :title, :size => 72 %><br />
     <br />
 
-    <%= f.label :body %><br />
+    <%= f.label :body %>
+    <div class="fpp_footer">
+      This is the front page post.
+    </div>
     <%= f.text_area :body, :class => 'mceEditor' %>
     <br />
 
-    <%= f.label :tag_list %><br />
+    <%= f.label :more_body %> 
+    - <strong>optional</strong><br />
+    <div class="fpp_footer">
+      Add more detail about your post if necessary.
+      This will be the "more inside" area of your post.
+    </div>
+    <%= f.text_area :more_body, :class => 'mceEditor' %>
+    <br />
+    
+    <%= f.label :tag_list %>
+    <div class="fpp_footer">
+      Be sure to add a descriptive tag to your post,
+      so other members can find it.
+      <strong>Separate tags with a comma.</strong>
+    </div>
     <%= f.text_field :tag_list, :size => 72 %><br />
     <br />
     
-    <%= f.submit 'Create' %>
+    <%= f.submit 'submit post' %>
+    <%= f.submit 'preview', :name => 'preview_button' %>
 
     <%= f.hidden_field :created_by, :value => session[:user_name] %>
     

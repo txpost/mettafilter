@@ -1,20 +1,41 @@
-<h1>Editing entry</h1>
+<h2>Edit your post</h2>
 
-<% form_for(@entry) do |f| %>
-  <%= f.error_messages %>
+<div class="new_entry">
+  <% form_for(@entry) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
+    <%= f.label :category %><br />
+    <%= f.radio_button :category, :post, :checked => true %>post<br />
+    <%= f.radio_button :category, :question %>question<br />
+    <%= f.radio_button :category, :quote %>quote (no links; from a book, class, etc)<br />
+    <br />
+
     <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </p>
-  <p>
-    <%= f.label :body %><br />
-    <%= f.text_area :body, :class => "mceEditor" %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
+    <%= f.text_field :title %><br />
+    <br />
 
-<%= link_to 'Show', @entry %> |
-<%= link_to 'Back', entries_path %>
+    <%= f.label :body %><br />
+    <%= f.text_area :body, :class => "mceEditor" %><br />
+    <br />
+
+    <%= f.label :more_body %> 
+    - <strong>optional</strong><br />
+    <div class="fpp_footer">
+      Add more detail about your post if necessary.
+      This will be the "more inside" area of your post.
+    </div>
+    <%= f.text_area :more_body, :class => 'mceEditor' %>
+    <br />
+    
+    <%= f.label :tag_list %>
+    <div class="fpp_footer">
+      Be sure to add a descriptive tag to your post,
+      so other members can find it.
+      <strong>Separate tags with a comma.</strong>
+    </div>
+    <%= f.text_field :tag_list, :size => 72 %><br />
+    <br />
+
+    <%= f.submit 'Update' %>
+  <% end %>
+</div>

@@ -5,7 +5,17 @@ class FavoritesController < ApplicationController
   # GET /favorites
   # GET /favorites.xml
   def index
-    @entries = Entry.find(:all)
+    
+    @entries = Entry.paginate :page => params[:page], 
+                              :per_page => 30, 
+                              :order => "created_at DESC",
+                              :conditions => ["favorites_count > 0"] 
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
+    @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
+                                               session[:user_id]] )
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,7 +37,12 @@ class FavoritesController < ApplicationController
   # GET /favorites/new
   # GET /favorites/new.xml
   def new
+    @entry = Entry.find(params[:entry])
     @favorite = Favorite.new
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
     
     respond_to do |format|
       format.html # new.html.erb
@@ -40,10 +55,21 @@ class FavoritesController < ApplicationController
     @favorite = Favorite.find(params[:id])
   end
 
+  def add_favorite
+    @favorite = Favorite.create(:entry_id => :entry, :user_id => :user) 
+    if @favorite.save
+      render :text => "added to favorites"
+    end
+  end
+
   # POST /favorites
   # POST /favorites.xml
   def create
     @favorite = Favorite.new(params[:favorite])
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
 
     respond_to do |format|
       if @favorite.save

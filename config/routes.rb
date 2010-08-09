@@ -1,13 +1,25 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :sequences
+
+  
+  
   map.resources :favcoms
 
   map.resources :favorites
   map.resources :tags
+  map.connect "users/posts", :controller => 'users', :action => 'posts'
+  map.connect "users/comments", :controller => 'users', :action => 'comments'
+  map.connect "users/favorites", :controller => 'users', :action => 'favorites'
+  map.connect "users/favcoms", :controller => 'users', :action => 'favcoms'
   map.resources :users, :has_many => :favorites
 	map.resources :comments
+	map.resources :questions
   map.resources :entries, :has_many => [:comments, :favorites]
 
   map.search "search", :controller => 'tags', :action => 'show'
+  
+  map.preview 'comment_preview', :controller => 'entries', :action => 'preview'
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -47,6 +59,7 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
+
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end

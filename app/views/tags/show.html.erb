@@ -1,22 +1,47 @@
-<%= link_to '<< back', :back %>
-
-<h3>Entries tagged as "<%= params[:query] %>"</h3>
+<h2>Entries tagged as "<%= params[:query] %>"</h2>
 <br />
 
 <% if @matches.blank? %>
   no matches found
 <% else %>
   <% @matches.each do |entry| %>
-    <%= entry.body %>
-    <div class="fpp_footer">
-      <strong><%= entry.title %></strong>
-      posted by <%= link_to h(entry.created_by), :controller => 'users',
-                                                   :action => 'show',
-                                                   :params => { :user_name => entry.created_by } %> 
-      at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
-      <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
-    </div>
-    
-    <br />
+    <% if entry.category == 'question' %>
+      <div class="question_container">
+    <% else %>
+      <div class="entry_container">
+    <% end %>
+      <%= sanitize_html(entry.body) %>
+      <div class="fpp_footer">
+        <strong><%= entry.title %></strong>
+        posted by <%= link_to h(entry.created_by), :controller => 'users',
+                                                     :action => 'show',
+                                                     :params => { :user_name => entry.created_by } %> 
+        at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
+        
+        <% if entry.category == 'question' %>
+          <%= link_to pluralize(h(entry.comments_count), " Answers"), entry %>
+        <% else %>
+          <%= link_to pluralize(h(entry.comments_count), " Comment"), entry %>
+        <% end %>
+        <% if session[:user_id] %>
+          |
+          <% flag = false %>
+          <% for favorite in @favored_by %>
+            <% if favorite.entry == entry %>
+              <%= pluralize(h(entry.favorites.count), "favorite")	 %>
+              <% flag = true %>
+              <% break %>
+            <% end %>
+          <% end %>
+          
+          <% if flag == false %>
+            <%= link_to "+",  :controller => 'favorites', 
+                              :action => 'new',
+                              :params => { :entry => entry, :user => session[:user_id] } %>      
+          <% end %>
+        <% end %>
+      </div>
+      </div>
+      <br />
   <% end %>
 <% end %>

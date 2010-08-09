@@ -1,24 +1,31 @@
-<% @entry_days.keys.sort.reverse.each do |day| %>
+<% @entry_days.keys.each do |day| %>
   <h2><%= day %></h2>
   <% for entry in @entry_days[day] %>
       
     <% if entry.category == 'question' %>
       <div class="question_container">
+    <% elsif entry.category == 'quote' %>
+      <div class="quote_container">
     <% else %>
       <div class="entry_container">
     <% end %>
         <%= sanitize_html(entry.body) %>
-        
+        <% unless entry.more_body.blank? %>
+          <span class="fpp_footer">
+            [<%= link_to "more inside", entry %>]
+          </span>
+        <% end %>
         <div class="fpp_footer">
           "<strong><%= entry.title %></strong>" |
           posted by <%= link_to h(entry.created_by), :controller => 'users',
                                                      :action => 'show',
                                                      :params => { :user_name => entry.created_by } %> 
           at <%= h(entry.created_at.strftime("%I:%M%P")) %> |
+          
           <% if entry.category == 'question' %>
-            <%= link_to "Answers", entry %> (<%= h(entry.comments_count) %>)
+            <%= link_to pluralize(h(entry.comments_count), " Answers"), entry %>
           <% else %>
-            <%= link_to "Comments", entry %> (<%= h(entry.comments_count) %>)
+            <%= link_to pluralize(h(entry.comments_count), " Comment"), entry %>
           <% end %>
           
 
@@ -39,8 +46,10 @@
                                 :params => { :entry => entry, :user => session[:user_id] } %>      
             <% end %>
           <% end %>
+          
         </div>
       </div>
+      <br />
   <% end %>
 <% end %>
 
@@ -48,22 +57,3 @@
   <%= will_paginate @entries %>
 </div>
 
-<% content_for :sidebar do %>
-  <div id="sidehead">
-    <%= link_to 'tags', :controller => 'tags', :action => 'index' %> |
-    <%= link_to 'favs', :controller => 'favorites', :action => 'index' %> |
-    <%= link_to 'Qs' %> |
-    <%= link_to 'pics' %>
-    <br /><br />
-  </div>
-
-  <div id="sidebar">
-    <h4>Sidebar says...</h4>
-    <% @sidebar.each do |entry| %>
-        <div class="sidebar_entry">
-          <strong><%= h(entry.created_at.strftime("%B %d")) %></strong><br />
-          <%= sanitize_html(entry.body) %>
-        </div>
-    <% end %>
-  </div>
-<% end %>

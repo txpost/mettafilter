@@ -1,24 +1,43 @@
-<h1>Editing user</h1>
+<h2>Edit Profile</h2>
 
-<% form_for(@user) do |f| %>
+<% form_for(@user, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :hashed_password %><br />
-    <%= f.text_field :hashed_password %>
-  </p>
-  <p>
-    <%= f.label :salt %><br />
-    <%= f.text_field :salt %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
+  <%= f.label :full_name %>
+  - <strong>optional</strong><br />
+  <div class="fpp_footer">
+    Put your real name, a fake name, or leave it blank. It's up to you.
+  </div>
+  <%= f.text_field :full_name %><br />
+  <br />
+  
+  <%= f.label :email %>
+  <div class="fpp_footer">
+    It's safe with us
+  </div>
+  <%= f.text_field :email %><br />
+  <br />
+  
+  <%= f.label :about %>
+  - <strong>optional</strong><br />
+  <div class="fpp_footer">
+    Enter whatever you want. 
+    If you have a website, maybe you'd like to post a link.
+  </div>
+  <%= f.text_area :about, :class => "mceEditor" %><br />
+  <br />
+  
+  <%= f.label :time_zone %><br />
+  <%= f.time_zone_select :time_zone %><br />
+  <br />
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+  <%= f.label :photo %><br />
+  <div class="fpp_footer">
+    Upload a pic for your profile page.
+  </div>
+  <%= f.file_field :photo %><br >
+  <br />
+
+  <%= f.submit 'update' %>
+
+<% end %>

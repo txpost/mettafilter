@@ -1,27 +1,37 @@
+<h2>New user</h2>
+<div class="entry_container">
+  <% if session[:user_name] == @admin.name %>
+    <% form_for(@user) do |f| %>
+      <%= f.error_messages %>
+      
+      <%= f.text_field :name, :size => 40 %>
+      <%= f.label :name %><br />
+      
+      <%= f.text_field :email, :size => 40 %>
+      <%= f.label :email %><br />
 
-<h1>New user</h1>
+      <%= f.password_field :password, :size => 40 %>
+      <%= f.label :user_password, 'Password' %><br />
 
-<% form_for(@user) do |f| %>
-  <%= f.error_messages %>
-  
-  <div>
-    <%= f.text_field :name, :size => 40 %>
-    <%= f.label :name %><br />
-  </div>
-  <div>
-    <%= f.password_field :password, :size => 40 %>
-    <%= f.label :user_password, 'Password' %><br />
-  </div>
-  <div>
-    <%= f.password_field :password_confirmation, :size => 40 %>
-    <%= f.label :user_password_confirmation, 'Cofirm' %><br />
-  </div>
-  <br />
-  <div>
-    <%= f.submit 'Create', :class => "submit" %>
-  </div>
-   
-<% end %>
-<br />
+      <%= f.password_field :password_confirmation, :size => 40 %>
+      <%= f.label :user_password_confirmation, 'Confirm Password' %><br />
+      <br />
 
-<%= link_to 'home', :controller => 'entries', :action => 'index' %>
+      <%= f.time_zone_select :time_zone %>
+      <%= f.label :time_zone %>
+      <br /><br />
+
+      <%= f.submit 'Create', :class => "submit" %> 
+    <% end %>
+  <% else %>
+    So, you want to be a part of MettaFilter eh?<br /><br />
+    <div class="fpp_footer">
+      Well, you're too fat old man!<br /> 
+      And you, you're too...BLONDE!<br />
+    </div><br />
+    Sorry, too much Fight Club.<br /><br />
+    Just send me an email and I'll hook you up.<br />
+    Tell me the user name and password you want.<br /><br />
+    Trev
+  <% end %>
+</div>

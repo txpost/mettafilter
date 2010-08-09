@@ -4,28 +4,29 @@ class EntriesController < ApplicationController
                               :theme_advanced_buttons2 => '',
                               :theme_advanced_buttons3 => '',
                               :relative_urls => false,
-                              :width => '600px' }
+                              :width => '600px',
+                              :height => '200px' }
   before_filter :authorize, :except => [:index, :show]
   # before_filter :authenticate, :except => [:index, :show]
 	# GET /entries
   # GET /entries.xml
+  
   def index
 # @entries = Entry.find(:all, :order => "created_at DESC")
     @entries = Entry.paginate :page => params[:page], 
-                              :per_page => 15, 
+                              :per_page => 30,
                               :order => "created_at DESC",
-                              :conditions => ["created_by != 'sidebar'"] 
+                              :conditions => ["created_by != ?", 'sidebar'] 
     @entry_days = @entries.group_by { |e| e.created_at.strftime("%B %d")}
     @comments = Comment.find(:all, 
                               :include => :entry, 
-                              :order => "created_at DESC",
-                              :limit => 10)
+                              :order => "created_at DESC")
     @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
                                                session[:user_id]] )
     @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
                                                 session[:user_id]] )
     @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
+                            :conditions => ["created_by = ?", 'sidebar'],
                             :limit => 20,
                             :order => "created_at DESC")
     
@@ -36,27 +37,41 @@ class EntriesController < ApplicationController
 			format.atom
     end
   end
-  
+    
+  def admin_user
+    @user = User.find_by_name("trev")
+  end
   # GET /entries/1
   # GET /entries/1.xml
   def show
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
     @entry = Entry.find(params[:id])
     @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
                                                session[:user_id]] )
     @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
                                                 session[:user_id]] )
-    
+    @admin = User.find_by_name("trev")
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @entry }
     end
   end
 
+  def preview
+    render :layout => false
+  end
+
   # GET /entries/new
   # GET /entries/new.xml
   def new
     @entry = Entry.new
-
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @entry }
@@ -66,22 +81,38 @@ class EntriesController < ApplicationController
   # GET /entries/1/edit
   def edit
     @entry = Entry.find(params[:id])
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
+  end
+
+  def add_favorite
+    @favorite = Favorite.create!(:entry_id => :entry, :user_id => :user) 
+    if @favorite.save
+      render :text => "added to favorites"
+    end
+  end
+
+  def vote
+    @entry = Entry.find(params[:id])
+    current_user.vote_for(@entry)
+
   end
 
   # POST /entries
   # POST /entries.xml
   def create
     @entry = Entry.new(params[:entry])
-
-    respond_to do |format|
-      if @entry.save
-        flash[:notice] = 'Entry was successfully created.'
-        format.html { redirect_to(@entry) }
-        format.xml  { render :xml => @entry, :status => :created, :location => @entry }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @entry.errors, :status => :unprocessable_entity }
-      end
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
+    if params[:preview_button] || !@entry.save
+      render :action => 'new'
+    else 
+      flash[:notice] = 'Entry was successfully created.'
+      redirect_to(@entry)
     end
   end
 
@@ -93,7 +124,7 @@ class EntriesController < ApplicationController
     respond_to do |format|
       if @entry.update_attributes(params[:entry])
         flash[:notice] = 'Entry was successfully updated.'
-        format.html { redirect_to(@entry) }
+        format.html { redirect_to(:action => 'show') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

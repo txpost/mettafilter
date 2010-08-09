@@ -5,7 +5,23 @@ class FavcomsController < ApplicationController
   # GET /favcoms
   # GET /favcoms.xml
   def index
-    @favcoms = Favcom.all
+    @entries = Entry.paginate :page => params[:page], 
+                              :per_page => 30, 
+                              :order => "created_at DESC",
+                              :conditions => ["created_by != 'sidebar'"] 
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
+    
+    @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
+                                                session[:user_id]] )
+    
+    @comments = Comment.paginate  :page => params[:page], 
+                                  :per_page => 30, 
+                                  :order => "created_at DESC",
+                                  :include => :entry,
+                                  :conditions => ["favcoms_count > ?", 0] 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,8 +43,13 @@ class FavcomsController < ApplicationController
   # GET /favcoms/new
   # GET /favcoms/new.xml
   def new
+    @comment = Comment.find(params[:comment])
     @favcom = Favcom.new
-
+    @sidebar = Entry.find(:all,
+                            :conditions => ["created_by = 'sidebar'"],
+                            :limit => 20,
+                            :order => "created_at DESC")
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @favcom }

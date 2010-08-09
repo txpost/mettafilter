@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100725173606) do
+ActiveRecord::Schema.define(:version => 20100807144405) do
 
   create_table "comments", :force => true do |t|
     t.integer  "entry_id"
@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20100725173606) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "created_by"
+    t.integer  "favcoms_count", :default => 0
   end
 
   create_table "entries", :force => true do |t|
@@ -24,9 +25,11 @@ ActiveRecord::Schema.define(:version => 20100725173606) do
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "comments_count", :default => 0
+    t.integer  "comments_count",  :default => 0
     t.string   "created_by"
     t.string   "category"
+    t.text     "more_body"
+    t.integer  "favorites_count", :default => 0
   end
 
   create_table "favcoms", :force => true do |t|
@@ -39,6 +42,13 @@ ActiveRecord::Schema.define(:version => 20100725173606) do
   create_table "favorites", :force => true do |t|
     t.integer  "entry_id"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sequences", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -63,6 +73,14 @@ ActiveRecord::Schema.define(:version => 20100725173606) do
     t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "about"
+    t.string   "full_name"
+    t.string   "time_zone"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.string   "email"
   end
 
 end
