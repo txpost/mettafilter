@@ -41,9 +41,12 @@
     <% end %>
     
     <% if flag == false %>
-      <%= link_to "+",  :controller => 'favorites', 
-                        :action => 'new',
-                        :params => { :entry => @entry, :user => session[:user_id] } %>      
+      <span id="favorite_<%= @entry.id %>">
+        <%= link_to_remote "+", :url => { :action => 'add_favorite',
+                                :entry_id => @entry.id,
+                                :user_id => session[:user_id]},
+                                :update => 'favorite_' + @entry.id.to_s %>
+      </span>      
     <% end %>
   <% end %>
 </div>

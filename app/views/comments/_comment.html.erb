@@ -11,9 +11,12 @@
     |
     <% flag = false %>
     <% if @favcomed_by.blank? %>
-      <%= link_to "+",  :controller => 'favcoms', 
-                        :action => 'new',
-                        :params => { :comment => comment, :user => session[:user_id] } %>
+      <span id="comment_<%= comment.id %>">
+        <%= link_to_remote "+", :url => { :action => 'add_favcom',
+                                :comment_id => comment.id,
+                                :user_id => session[:user_id]},
+                                :update => 'comment_' + comment.id.to_s %>
+      </span>
       <% flag = true %>
     <% else %>
       <% for favcom in @favcomed_by %>
@@ -26,9 +29,12 @@
     <% end %>
       
     <% if flag == false %>
-      <%= link_to "+",  :controller => 'favcoms', 
-                        :action => 'new',
-                        :params => { :comment => comment, :user => session[:user_id] } %>      
+      <span id="comment_<%= comment.id %>">
+        <%= link_to_remote "+", :url => { :action => 'add_favcom',
+                                :comment_id => comment.id,
+                                :user_id => session[:user_id]},
+                                :update => 'comment_' + comment.id.to_s %>
+      </span>      
     <% end %>
   <% end %>
 	<!--

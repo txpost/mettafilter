@@ -56,7 +56,7 @@ class FavoritesController < ApplicationController
   end
 
   def add_favorite
-    @favorite = Favorite.create(:entry_id => :entry, :user_id => :user) 
+    @favorite = Favorite.create(:entry_id => params[:entry_id], :user_id => params[:user_id]) 
     if @favorite.save
       render :text => "added to favorites"
     end

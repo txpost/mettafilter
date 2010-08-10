@@ -88,9 +88,16 @@ class EntriesController < ApplicationController
   end
 
   def add_favorite
-    @favorite = Favorite.create!(:entry_id => :entry, :user_id => :user) 
+    @favorite = Favorite.new(:entry_id => params[:entry_id], :user_id => params[:user_id])
     if @favorite.save
-      render :text => "added to favorites"
+      render :text => "added to favorites", :layout => false
+    end
+  end
+
+  def add_favcom
+    @favcom = Favcom.new(:comment_id => params[:comment_id], :user_id => params[:user_id])
+    if @favcom.save
+      render :text => "added to favorites", :layout => false
     end
   end
 
