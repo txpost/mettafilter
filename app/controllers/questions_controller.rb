@@ -12,14 +12,8 @@ class QuestionsController < ApplicationController
                               :include => :entry, 
                               :order => "created_at DESC",
                               :limit => 10)
-    @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
-                                               session[:user_id]] )
-    @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
-                                                session[:user_id]] )
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
-                            :limit => 20,
-                            :order => "created_at DESC")
+    @favored_by = Favorite.find_all_by_user_id(@current_user)
+    @favcomed_by = Favcom.find_all_by_user_id(@current_user)
     
     respond_to do |format|
       format.html # index.html.erb

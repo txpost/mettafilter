@@ -21,14 +21,8 @@ class EntriesController < ApplicationController
     @comments = Comment.find(:all, 
                               :include => :entry, 
                               :order => "created_at DESC")
-    @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
-                                               session[:user_id]] )
-    @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
-                                                session[:user_id]] )
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = ?", 'sidebar'],
-                            :limit => 20,
-                            :order => "created_at DESC")
+    @favored_by = Favorite.find_all_by_user_id(@current_user)
+    @favcomed_by = Favcom.find_all_by_user_id(@current_user)
     
     respond_to do |format|
       format.html # index.html.erb
@@ -44,16 +38,10 @@ class EntriesController < ApplicationController
   # GET /entries/1
   # GET /entries/1.xml
   def show
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
-                            :limit => 20,
-                            :order => "created_at DESC")
     @entry = Entry.find(params[:id])
-    @favored_by = Favorite.find(:all, :conditions => ["user_id = ?", 
-                                               session[:user_id]] )
-    @favcomed_by = Favcom.find(:all, :conditions => ["user_id = ?",
-                                                session[:user_id]] )
-    @admin = User.find_by_name("trev")
+    @favored_by = Favorite.find_all_by_user_id(@current_user)
+    @favcomed_by = Favcom.find_all_by_user_id(@current_user)
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @entry }
@@ -68,10 +56,7 @@ class EntriesController < ApplicationController
   # GET /entries/new.xml
   def new
     @entry = Entry.new
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
-                            :limit => 20,
-                            :order => "created_at DESC")
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @entry }
@@ -81,10 +66,6 @@ class EntriesController < ApplicationController
   # GET /entries/1/edit
   def edit
     @entry = Entry.find(params[:id])
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
-                            :limit => 20,
-                            :order => "created_at DESC")
   end
 
   def add_favorite
@@ -111,10 +92,7 @@ class EntriesController < ApplicationController
   # POST /entries.xml
   def create
     @entry = Entry.new(params[:entry])
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
-                            :limit => 20,
-                            :order => "created_at DESC")
+    
     if params[:preview_button] || !@entry.save
       render :action => 'new'
     else 
@@ -155,7 +133,7 @@ class EntriesController < ApplicationController
   protected
   
   def authorize
-    unless User.find_by_id(session[:user_id])
+    unless User.find_by_id(@current_user.id)
       session[:original_uri] = request.request_uri
       flash[:notice] = "Please log in"
       redirect_to :controller => 'admin', :action => 'login'

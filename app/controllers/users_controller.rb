@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   layout 'entries'
   before_filter :authorize, :except => [:new, :create, :show, :posts, :comments, :favorites, :favcoms]
-  before_filter :side_bar, :param_user, :admin
   uses_tiny_mce :options => { :theme => 'advanced', 
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',
                               :theme_advanced_buttons2 => '',
@@ -130,21 +129,6 @@ class UsersController < ApplicationController
   end
   
   protected
-  
-  def side_bar
-    @sidebar = Entry.find(:all,
-                            :conditions => ["created_by = 'sidebar'"],
-                            :limit => 20,
-                            :order => "created_at DESC")
-  end
-  
-  def param_user
-    @user = User.find(:first, :conditions => ["name = ?", params[:user_name]])
-  end
-  
-  def admin
-    @admin = User.find_by_name("trev")
-  end
   
   def authorize
     unless User.find_by_id(session[:user_id])
