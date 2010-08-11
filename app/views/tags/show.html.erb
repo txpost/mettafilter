@@ -23,7 +23,7 @@
         <% else %>
           <%= link_to pluralize(h(entry.comments_count), " Comment"), entry %>
         <% end %>
-        <% if session[:user_id] %>
+        <% if @current_user %>
           |
           <% flag = false %>
           <% for favorite in @favored_by %>
@@ -37,7 +37,7 @@
           <% if flag == false %>
             <%= link_to "+",  :controller => 'favorites', 
                               :action => 'new',
-                              :params => { :entry => entry, :user => session[:user_id] } %>      
+                              :params => { :entry => entry, :user => @current_user.id } %>      
           <% end %>
         <% end %>
       </div>

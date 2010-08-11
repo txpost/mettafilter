@@ -22,19 +22,17 @@
     <span class="fpp_footer">
     | <%= link_to 'questions', :controller => 'questions', :action => 'index' %>
     | <%= link_to 'quotes', :controller => 'quotes', :action => 'index' %>
-    | <%= link_to 'sequences', :controller => 'sequences', :action => 'index' %>
     </span>
   </div>
 
   <div class="main">
     <%= link_to 'home', entries_path %> |
-      <% if session[:user_id] %>
+      <% if @current_user %>
         <%= link_to 'new entry', new_entry_path %> |
-        <%= link_to 'new sequence', new_sequence_path %> |
-        logged in as <%= link_to session[:user_name],
+        logged in as <%= link_to @current_user.name,
                                           :controller => 'users',
                                           :action => 'show',
-                                          :params => { :user_name => session[:user_name] } %> |
+                                          :params => { :user_name => @current_user.name } %> |
         <%= link_to 'logout', :controller => 'admin', :action => 'logout' %>
         
       <% else %>

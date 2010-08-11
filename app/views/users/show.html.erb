@@ -1,4 +1,4 @@
-<% if session[:user_id] == @user.id %>
+<% if @current_user and @current_user.id == @admin.id %>
   <%= link_to 'edit profile', edit_user_path(@user) %>
 <% end %>
 
@@ -11,7 +11,7 @@
   <%=h @user.name %>
   <br />
   
-  <% if @user.name == session[:user_name] %>
+  <% if @current_user and @current_user.name == @user.name %>
     <%= sanitize_html(@user.email) %>
   <% end %>
   <br /><br />

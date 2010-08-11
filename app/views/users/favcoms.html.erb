@@ -13,7 +13,7 @@
                                        :action => 'show',
                                        :id => favorite.comment.entry_id,
                                        :anchor => favorite.comment.id %> 
-      <% if session[:user_name] == @user.name %>
+      <% if @current_user.name == @user.name %>
         |
         [<%= link_to 'remove favorite', favorite, :confirm => 'Are you sure?', :method => :delete %>]
       <% end %>     
@@ -25,19 +25,3 @@
 <div class="footer">
   <%= will_paginate @user_favcoms %>
 </div>
-
-<% for favcom in @user_favcoms %>
-  <%= favcom.comment.body %>
-  <div class="fpp_footer">
-    favored in
-    <%= link_to favcom.comment.entry.title, :controller => 'entries',
-                                            :action => 'show',
-                                            :id => favcom.comment.entry_id,
-                                            :anchor => favcom.comment_id %>
-    at <%= favcom.created_at.strftime("%I:%M%P on %a, %b %d %Y ") %>
-    <% if session[:user_name] == @user.name %>
-      [<%= link_to 'remove', favcom, :confirm => 'Are you sure?', :method => :delete %>]
-    <% end %> 
-  </div>
-  <br />
-<% end %>

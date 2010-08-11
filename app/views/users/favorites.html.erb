@@ -22,7 +22,7 @@
         <%= link_to pluralize(h(favorite.entry.comments_count), " Comment"), favorite.entry %>
       <% end %>
       
-      <% if session[:user_name] == @user.name %>
+      <% if @current_user.name == @user.name %>
         |
         [<%= link_to 'remove favorite', favorite, :confirm => 'Are you sure?', :method => :delete %>]
       <% end %>

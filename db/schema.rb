@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100807144405) do
+ActiveRecord::Schema.define(:version => 20100805162135) do
 
   create_table "comments", :force => true do |t|
     t.integer  "entry_id"
@@ -42,13 +42,6 @@ ActiveRecord::Schema.define(:version => 20100807144405) do
   create_table "favorites", :force => true do |t|
     t.integer  "entry_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "sequences", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

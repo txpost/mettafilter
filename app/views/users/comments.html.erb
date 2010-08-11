@@ -14,13 +14,13 @@
                                        :id => comment.entry_id,
                                        :anchor => comment.id %>
       
-      <% if session[:user_id] %>
+      <% if @current_user %>
         |
         <% flag = false %>
         <% if @favcomed_by.blank? %>
           <%= link_to "+",  :controller => 'favcoms', 
                             :action => 'new',
-                            :params => { :comment => comment, :user => session[:user_id] } %>
+                            :params => { :comment => comment, :user => @current_user.id } %>
           <% flag = true %>
         <% else %>
           <% for favcom in @favcomed_by %>
@@ -35,11 +35,11 @@
         <% if flag == false %>
           <%= link_to "+",  :controller => 'favcoms', 
                             :action => 'new',
-                            :params => { :comment => comment, :user => session[:user_id] } %>      
+                            :params => { :comment => comment, :user => @current_user.id } %>      
         <% end %>
       <% end %>
       
-      <% if session[:user_name] == @admin.name %>
+      <% if @current_user.name == @admin.name %>
         [<%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>]
       <% end %>
         
