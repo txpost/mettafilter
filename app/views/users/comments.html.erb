@@ -1,6 +1,6 @@
-<h2>Comments by <%= link_to @user.name, :controller => 'users', 
+<h2>Comments by <%= link_to @user.login, :controller => 'users', 
                                        :action => 'show', 
-                                       :user_name => @user.name %></h2>
+                                       :user_name => @user.login %></h2>
 <% for comment in @user_comments %>
   <div class="entry_container">
     <%= comment.body %>
@@ -39,7 +39,7 @@
         <% end %>
       <% end %>
       
-      <% if @current_user.name == @admin.name %>
+      <% if @current_user.login == @admin.login %>
         [<%= link_to 'Destroy', comment, :method => :delete, :confirm => "Are you sure?" %>]
       <% end %>
         

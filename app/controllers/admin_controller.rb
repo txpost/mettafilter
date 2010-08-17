@@ -12,7 +12,7 @@ class AdminController < ApplicationController
       user = User.authenticate(params[:name], params[:password])
       if user
         session[:user_id] = user.id
-        session[:user_name] = user.name
+        session[:user_name] = user.login
         redirect_to :controller => 'entries', :action => "index"
       else
         flash.now[:notice] = "Invalid user/password combination"
@@ -24,7 +24,7 @@ class AdminController < ApplicationController
     session[:user_id] = nil
     session[:user_name] = nil
     flash[:notice] = "Logged out"
-    redirect_to :back
+    redirect_to :controller => 'entries', :action => "index"
   end
 
   def index

@@ -27,17 +27,17 @@
 
   <div class="main">
     <%= link_to 'home', entries_path %> |
-      <% if @current_user %>
+      <% if current_user %>
         <%= link_to 'new entry', new_entry_path %> |
-        logged in as <%= link_to @current_user.name,
+        logged in as <%= link_to current_user.login,
                                           :controller => 'users',
                                           :action => 'show',
-                                          :params => { :user_name => @current_user.name } %> |
-        <%= link_to 'logout', :controller => 'admin', :action => 'logout' %>
+                                          :params => { :user_name => current_user.login } %> |
+        <%= link_to 'logout', logout_path %>
         
       <% else %>
-        <%= link_to 'login', :controller => 'admin', :action => 'login' %> |
-        <%= link_to 'register', :controller => 'users', :action => 'new' %>
+        <%= link_to 'login', login_path %> |
+        <%= link_to 'register', new_user_path %>
       <% end %>
     <br /><br />
 

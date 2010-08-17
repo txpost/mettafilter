@@ -14,7 +14,7 @@
   at <%= h(@entry.created_at.strftime("%I:%M%P")) %> |
   
   
-  <% if @current_user and @current_user.name == @admin.name %>
+  <% if current_user and current_user.login == admin.login %>
     <%= link_to 'edit', edit_entry_path(@entry) %> |
     <%= link_to 'remove', @entry, :method => :delete, :confirm => "Are you sure?" %> |
   <% end %>
@@ -29,7 +29,7 @@
     <% end %>
   <% end %>
   
-  <% if @current_user %>
+  <% if current_user %>
     |
     <% flag = false %>
     <% for favorite in @favored_by %>
@@ -44,7 +44,7 @@
       <span id="favorite_<%= @entry.id %>">
         <%= link_to_remote "+", :url => { :action => 'add_favorite',
                                 :entry_id => @entry.id,
-                                :user_id => @current_user.id },
+                                :user_id => current_user.id },
                                 :update => 'favorite_' + @entry.id.to_s %>
       </span>      
     <% end %>
@@ -59,14 +59,14 @@
   <% end %>
   
   <div class="new_comments">
-    <% if @current_user %>
+    <% if current_user %>
       <% form_for [@entry, Comment.new], :html => { :id => 'new_comment' } do |f| %>
       	
         <%= f.label :body, "New Comment" %><br />
       	<%= f.text_area :body, :class => 'mceEditor' %><br />
       	
       	<%= f.submit 'add comment' %>
-      	<%= f.hidden_field :created_by, :value => @current_user.name %>
+      	<%= f.hidden_field :created_by, :value => current_user.login %>
       <% end %>
     <% end %>
     

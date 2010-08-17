@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100805162135) do
+ActiveRecord::Schema.define(:version => 20100817024713) do
 
   create_table "comments", :force => true do |t|
     t.integer  "entry_id"
@@ -61,9 +61,9 @@ ActiveRecord::Schema.define(:version => 20100805162135) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name"
-    t.string   "hashed_password"
-    t.string   "salt"
+    t.string   "login"
+    t.string   "crypted_password"
+    t.string   "password_salt"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "about"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20100805162135) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
     t.string   "email"
+    t.string   "persistence_token"
   end
 
 end

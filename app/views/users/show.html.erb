@@ -1,4 +1,4 @@
-<% if @current_user and @current_user.id == @admin.id %>
+<% if current_user and current_user.id == admin.id %>
   <%= link_to 'edit profile', edit_user_path(@user) %>
 <% end %>
 
@@ -8,10 +8,10 @@
     <%= sanitize_html(@user.full_name) %> aka
   <% end %>
   
-  <%=h @user.name %>
+  <%=h @user.login %>
   <br />
   
-  <% if @current_user and @current_user.name == @user.name %>
+  <% if current_user and current_user.login == @user.login %>
     <%= sanitize_html(@user.email) %>
   <% end %>
   <br /><br />
@@ -29,33 +29,37 @@
   <% if @user_entries.count == 0 %>
     no posts
   <% else %>
-    <%= link_to @user_entries.count,  :controller => 'users', 
+    <%= link_to pluralize(@user_entries.count, "post"),  
+                                      :controller => 'users', 
                                       :action => 'posts',
-                                      :user_name => @user.name %> posts
+                                      :user_name => @user.login %>
   <% end %>
   <br />
   <% if @user_comments.count == 0 %>
     no comments
   <% else %>
-    <%= link_to @user_comments.count, :controller => 'users',
+    <%= link_to pluralize(@user_comments.count, "comment"), 
+                                      :controller => 'users',
                                       :action => 'comments',
-                                      :user_name => @user.name %> comments
+                                      :user_name => @user.login %>
   <% end %>
   <br />
   <% if @user_favorites.count == 0 %>
-    no favorites
+    no favorite posts
   <% else %>
-    <%= link_to @user_favorites.count, :controller => 'users',
+    <%= link_to pluralize(@user_favorites.count, "favorite post"), 
+                                       :controller => 'users',
                                        :action => 'favorites',
-                                       :user_name => @user.name %> favorite posts
+                                       :user_name => @user.login %>
   <% end %>
   <br />
   <% if @user_favcoms.count == 0 %>
-    no favorites
+    no favorite comments
   <% else %>
-    <%= link_to @user_favcoms.count, :controller => 'users',
+    <%= link_to pluralize(@user_favcoms.count, "favorite comment"), 
+                                     :controller => 'users',
                                      :action => 'favcoms',
-                                     :user_name => @user.name %> favorite comments
+                                     :user_name => @user.login %>
     
   <% end %>
   

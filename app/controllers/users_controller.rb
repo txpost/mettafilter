@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   layout 'entries'
   before_filter :authorize, :except => [:new, :create, :show, :posts, :comments, :favorites, :favcoms]
+  before_filter :user
   uses_tiny_mce :options => { :theme => 'advanced', 
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',
                               :theme_advanced_buttons2 => '',
@@ -22,7 +23,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    @user = User.find(:first, :conditions => ["name = ?", params[:user_name]])
     @user_entries = Entry.find( :all, 
                                 :conditions => ["created_by = ?", params[:user_name]],
                                 :order => "created_at DESC")
@@ -87,15 +87,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    respond_to do |format|
-      if @user.save
-        flash[:notice] = "User #{@user.name} was successfully created."
-        format.html { redirect_to(:controller => 'entries', :action => 'index') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+    if @user.save
+      flash[:notice] = "Registration successful."
+      redirect_to root_url
+    else
+      render :action => "new"
     end
   end
 
@@ -106,8 +102,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = "User #{@user.name} was successfully updated."
-        format.html { redirect_to(:action => 'show', :user_name => session[:user_name]) }
+        flash[:notice] = "Profile successfully updated."
+        format.html { redirect_to(:action => 'show', :user_name => current_user.login) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -130,12 +126,8 @@ class UsersController < ApplicationController
   
   protected
   
-  def authorize
-    unless User.find_by_id(session[:user_id])
-      session[:original_uri] = request.request_uri
-      flash[:notice] = "Please log in"
-      redirect_to :controller => 'admin', :action => 'login'
-    end
+  def user
+    @user = User.find(:first, :conditions => ["login = ?", params[:user_name]])
   end
   
 end

@@ -1,34 +1,25 @@
 <h2>New user</h2>
 <div class="entry_container">
-  <% if session[:user_name] == @admin.name %>
-    <% form_for(@user) do |f| %>
-      <%= f.error_messages %>
-      
-      <%= f.text_field :name, :size => 40 %>
-      <%= f.label :name %><br />
-      
-      <%= f.text_field :email, :size => 40 %>
-      <%= f.label :email %><br />
-
-      <%= f.password_field :password, :size => 40 %>
-      <%= f.label :user_password, 'Password' %><br />
-
-      <%= f.password_field :password_confirmation, :size => 40 %>
-      <%= f.label :user_password_confirmation, 'Confirm Password' %><br />
-      <br />
-
-      <%= f.time_zone_select :time_zone %>
-      <%= f.label :time_zone %>
-      <br /><br />
-
-      <%= f.submit 'Create', :class => "submit" %> 
-    <% end %>
-  <% else %>
-    So, you want to be a part of MettaFilter eh?<br /><br />
+  <% form_for(@user) do |f| %>
+    <%= f.error_messages %>
     
-    For now, I'll' handle registration for you.
-    Just send me an email and I'll hook you up.<br />
-    Tell me the user name and password you want.<br /><br />
-    Trev
+    <%= f.text_field :login, :size => 40 %>
+    <%= f.label :login %><br />
+    
+    <%= f.text_field :email, :size => 40 %>
+    <%= f.label :email %><br />
+
+    <%= f.password_field :password, :size => 40 %>
+    <%= f.label :password, 'Password' %><br />
+
+    <%= f.password_field :password_confirmation, :size => 40 %>
+    <%= f.label :password_confirmation, 'Confirm Password' %><br />
+    <br />
+
+    <%= f.time_zone_select :time_zone %>
+    <%= f.label :time_zone %>
+    <br /><br />
+
+    <%= f.submit 'Create', :class => "submit" %> 
   <% end %>
 </div>

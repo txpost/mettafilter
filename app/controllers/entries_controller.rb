@@ -21,8 +21,8 @@ class EntriesController < ApplicationController
     @comments = Comment.find(:all, 
                               :include => :entry, 
                               :order => "created_at DESC")
-    @favored_by = Favorite.find_all_by_user_id(@current_user)
-    @favcomed_by = Favcom.find_all_by_user_id(@current_user)
+    @favored_by = Favorite.find_all_by_user_id(current_user)
+    @favcomed_by = Favcom.find_all_by_user_id(current_user)
     
     respond_to do |format|
       format.html # index.html.erb
@@ -33,14 +33,14 @@ class EntriesController < ApplicationController
   end
     
   def admin_user
-    @user = User.find_by_name("trev")
+    @user = User.find_by_login("trev")
   end
   # GET /entries/1
   # GET /entries/1.xml
   def show
     @entry = Entry.find(params[:id])
-    @favored_by = Favorite.find_all_by_user_id(@current_user)
-    @favcomed_by = Favcom.find_all_by_user_id(@current_user)
+    @favored_by = Favorite.find_all_by_user_id(current_user)
+    @favcomed_by = Favcom.find_all_by_user_id(current_user)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -80,12 +80,6 @@ class EntriesController < ApplicationController
     if @favcom.save
       render :text => "added to favorites", :layout => false
     end
-  end
-
-  def vote
-    @entry = Entry.find(params[:id])
-    current_user.vote_for(@entry)
-
   end
 
   # POST /entries
@@ -130,21 +124,4 @@ class EntriesController < ApplicationController
     end
   end
 
-  protected
-  
-  def authorize
-    unless User.find_by_id(@current_user.id)
-      session[:original_uri] = request.request_uri
-      flash[:notice] = "Please log in"
-      redirect_to :controller => 'admin', :action => 'login'
-    end
-  end
-
-	private
-
-	def authenticate
-		authenticate_or_request_with_http_basic do |name, password|
-			name == "admin" && password == "secret"
-		end
-	end
 end

@@ -1,6 +1,6 @@
-<h2>favorite comments for <%= link_to @user.name, :controller => 'users', 
+<h2>favorite comments for <%= link_to @user.login, :controller => 'users', 
                             :action => 'show', 
-                            :user_name => @user.name %></h2>
+                            :user_name => @user.login %></h2>
 <% for favorite in @user_favcoms %>
   <div class="entry_container">
     <%= sanitize_html(favorite.comment.body) %>
@@ -13,7 +13,7 @@
                                        :action => 'show',
                                        :id => favorite.comment.entry_id,
                                        :anchor => favorite.comment.id %> 
-      <% if @current_user.name == @user.name %>
+      <% if @current_user and @current_user.login == @user.login %>
         |
         [<%= link_to 'remove favorite', favorite, :confirm => 'Are you sure?', :method => :delete %>]
       <% end %>     
