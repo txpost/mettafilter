@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100817024713) do
+ActiveRecord::Schema.define(:version => 20100819220247) do
 
   create_table "comments", :force => true do |t|
     t.integer  "entry_id"
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20100817024713) do
     t.datetime "photo_updated_at"
     t.string   "email"
     t.string   "persistence_token"
+    t.boolean  "active",             :default => false, :null => false
+    t.string   "perishable_token",   :default => "",    :null => false
   end
 
 end

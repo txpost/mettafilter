@@ -1,6 +1,13 @@
 class UsersController < ApplicationController
   layout 'entries'
-  before_filter :authorize, :except => [:new, :create, :show, :posts, :comments, :favorites, :favcoms]
+  before_filter :authorize, :except => [:new, 
+                                        :create, 
+                                        :show, 
+                                        :posts, 
+                                        :comments, 
+                                        :favorites, 
+                                        :favcoms, 
+                                        :resend_activation]
   before_filter :user
   uses_tiny_mce :options => { :theme => 'advanced', 
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',
@@ -12,12 +19,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = User.find(:all, :order => :name)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-    end
+    @users = User.find(:all, :order => :login)
   end
 
   # GET /users/1
@@ -32,11 +34,6 @@ class UsersController < ApplicationController
                                     :include => :entry)
     @user_favorites = @user.favorites.find (:all, :order => "created_at DESC")
     @user_favcoms = @user.favcoms.find (:all, :order => "created_at DESC")
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
   
   def posts
@@ -70,16 +67,11 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @user }
-    end
   end
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = current_user
   end
 
   # POST /users
@@ -87,28 +79,24 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    if @user.save
-      flash[:notice] = "Registration successful."
+    if @user.save_without_session_maintenance
+      @user.deliver_activation_instructions!
+      flash[:notice] = "Your account has been created. Please check your email for your account activation instructions!"
       redirect_to root_url
     else
-      render :action => "new"
+      render :action => :new
     end
   end
 
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        flash[:notice] = "Profile successfully updated."
-        format.html { redirect_to(:action => 'show', :user_name => current_user.login) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-      end
+    @user = current_user
+    if @user.update_attributes(params[:user])
+      flash[:notice] = "Profile update successful."
+      redirect_to root_url
+    else
+      render :action => "edit"
     end
   end
 
@@ -121,6 +109,17 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(entries_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def resend_activation
+    if params[:login]
+      @user = User.find_by_login(params[:login])
+      if @user && !@user.active?
+        @user.deliver_activation_instructions!
+        flash[:notice] = "Please check your email for your account activation instructions!"
+        redirect_to root_path
+      end
     end
   end
   

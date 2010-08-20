@@ -1,4 +1,4 @@
-<% if current_user and current_user.id == admin.id %>
+<% if current_user and current_user.id == @user.id %>
   <%= link_to 'edit profile', edit_user_path(@user) %>
 <% end %>
 

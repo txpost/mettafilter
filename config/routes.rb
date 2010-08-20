@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.login "login", :controller => "user_sessions", :action => "new"
   map.logout "logout", :controller => "user_sessions", :action => "destroy"
-  
+  map.activate '/activate/:activation_code', :controller => 'activations', :action => 'create'
   map.resources :user_sessions
   map.resources :favcoms
   map.resources :favorites
@@ -10,7 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "users/comments", :controller => 'users', :action => 'comments'
   map.connect "users/favorites", :controller => 'users', :action => 'favorites'
   map.connect "users/favcoms", :controller => 'users', :action => 'favcoms'
-  map.resources :users, :has_many => :favorites
+  map.resources :users, :has_many => :favorites, :collection => { :resend_activation => :get }
+  map.resources :account, :controller => 'users'
 	map.resources :comments
 	map.resources :questions
   map.resources :entries, :has_many => [:comments, :favorites]

@@ -19,9 +19,26 @@ class User < ActiveRecord::Base
                   :password_confirmation,
                   :full_name, 
                   :about, 
-                  :email
+                  :email,
+                  :openid_identifier
+                  
   attr_accessor :password_confirmation
   
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+  
+  def activate!
+    self.active = true
+    save
+  end
+
+  def deliver_activation_instructions!
+    reset_perishable_token!
+    Notifier.deliver_activation_instructions(self)
+  end
+  
+  def deliver_welcome!
+    reset_perishable_token!
+    Notifier.deliver_welcome(self)
+  end
   
 end
