@@ -15,6 +15,6 @@ authorization do
   
   role :guest do 
     has_permission_on :entries, :to => [:index, :show]
-    has_permission_on :users, :to => [:new, :create, :show]
+    has_permission_on :users, :to => [:new, :create, :show, :resend_activation]
   end
 end
