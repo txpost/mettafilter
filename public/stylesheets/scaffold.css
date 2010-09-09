@@ -33,7 +33,8 @@ p { margin: 0;}
 .new_comments { margin: 20px 0; }
 #welcome { width:200px; margin:auto; }
 .footer { margin-bottom:10px;}
-.the_bottom { background-color: #2E3B37; color: white; margin: 10px -8px -8px -8px; padding:8px;}
+.the_bottom { background-color: #2E3B37; color: white; margin: 10px -8px -8px -8px; padding:8px;
+              font-size: 11px; }
 #flash { color:blue; margin-bottom: 10px;}
 .css1 { font-size:1.0em; }
 .css2 { font-size:1.5em; }
@@ -59,6 +60,11 @@ pre {
 .sidebar a:link { color: darkred; }
 .sidebar a:visited { color: darkred; }
 .sidebar a:hover { color: #fff; background-color:#000; }
+
+.the_bottom a { color: #000; text-decoration: none;}
+.the_bottom a:link { color: lightblue; }
+.the_bottom a:visited { color: lightblue; }
+.the_bottom a:hover { color: #fff; background-color:#000; }
 
 a { color: #000; text-decoration: none;}
 a:link { color: darkred; }

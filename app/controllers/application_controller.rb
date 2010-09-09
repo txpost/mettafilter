@@ -4,12 +4,12 @@
 class ApplicationController < ActionController::Base
   before_filter :set_user_time_zone, :sidebar
   helper :all # include all helpers, all the time
-  helper_method :current_user, :current_user_session, :admin, :authorize
+  helper_method :current_user, :current_user_session
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   filter_parameter_logging "password", "email"
-
+  before_filter { |c| Authorization.current_user = c.current_user }
   
-  private
+  #protected
   
   def sidebar
     @sidebar = Entry.find_all_by_created_by('sidebar', :limit => 20, :order => "created_at DESC")
@@ -51,19 +51,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
-  
-  def authorize
-    unless User.find_by_id(current_user)
-      session[:original_uri] = request.request_uri
-      flash[:notice] = "Please log in"
-      redirect_to login_url
-    end
-  end
-  
-  def admin
-    @admin = User.find_by_login("trev")
-  end
-  
+    
   def set_user_time_zone
     @user = User.find_by_id(session[:user_id])
     Time.zone = @user.time_zone unless @user.blank?

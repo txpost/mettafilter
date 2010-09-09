@@ -1,4 +1,5 @@
 class EntriesController < ApplicationController
+  filter_resource_access
   uses_tiny_mce :options => { :theme => 'advanced', 
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',
                               :theme_advanced_buttons2 => '',
@@ -6,8 +7,7 @@ class EntriesController < ApplicationController
                               :relative_urls => false,
                               :width => '600px',
                               :height => '200px' }
-  before_filter :authorize, :except => [:index, :show]
-  # before_filter :authenticate, :except => [:index, :show]
+
 	# GET /entries
   # GET /entries.xml
   
@@ -32,9 +32,6 @@ class EntriesController < ApplicationController
     end
   end
     
-  def admin_user
-    @user = User.find_by_login("trev")
-  end
   # GET /entries/1
   # GET /entries/1.xml
   def show
@@ -46,10 +43,6 @@ class EntriesController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @entry }
     end
-  end
-
-  def preview
-    render :layout => false
   end
 
   # GET /entries/new
@@ -68,20 +61,6 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
   end
 
-  def add_favorite
-    @favorite = Favorite.new(:entry_id => params[:entry_id], :user_id => params[:user_id])
-    if @favorite.save
-      render :text => "added to favorites", :layout => false
-    end
-  end
-
-  def add_favcom
-    @favcom = Favcom.new(:comment_id => params[:comment_id], :user_id => params[:user_id])
-    if @favcom.save
-      render :text => "added to favorites", :layout => false
-    end
-  end
-
   # POST /entries
   # POST /entries.xml
   def create
@@ -90,8 +69,8 @@ class EntriesController < ApplicationController
     if params[:preview_button] || !@entry.save
       render :action => 'new'
     else 
-      flash[:notice] = 'Entry was successfully created.'
-      redirect_to(@entry)
+      flash[:notice] = 'Post was successfully created.'
+      redirect_to root_url
     end
   end
 
@@ -121,6 +100,24 @@ class EntriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(entries_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def preview
+    render :layout => false
+  end
+
+  def add_favorite
+    @favorite = Favorite.new(:entry_id => params[:id], :user_id => params[:user_id])
+    if @favorite.save
+      render :text => "added to favorites", :layout => false
+    end
+  end
+
+  def add_favcom
+    @favcom = Favcom.new(:comment_id => params[:id], :user_id => params[:user_id])
+    if @favcom.save
+      render :text => "added to favorites", :layout => false
     end
   end
 

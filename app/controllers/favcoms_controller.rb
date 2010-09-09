@@ -1,6 +1,5 @@
 class FavcomsController < ApplicationController
   layout 'entries'
-  before_filter :authorize, :except => [:index, :show]
   
   # GET /favcoms
   # GET /favcoms.xml

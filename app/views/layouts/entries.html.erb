@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>"breathe, you are online"</title>
+  <title>Internet for Introverts</title>
   <%= stylesheet_link_tag 'scaffold' %>
 	<%= auto_discovery_link_tag :atom, entries_path(:atom) %>
 	<%= javascript_include_tag :all %>
@@ -18,17 +18,21 @@
 <div class="container">
     
   <div class="header">
-    <%= link_to 'MettaFilter', :controller => 'entries', :action => 'index' %>
+    <%= link_to 'The Intronet', :controller => 'entries', :action => 'index' %>
+    
     <span class="fpp_footer">
     | <%= link_to 'questions', :controller => 'questions', :action => 'index' %>
     | <%= link_to 'quotes', :controller => 'quotes', :action => 'index' %>
     </span>
+    
   </div>
 
   <div class="main">
     <%= link_to 'home', entries_path %> |
       <% if current_user %>
-        <%= link_to 'new entry', new_entry_path %> |
+        <% if permitted_to? :new, Entry.new %>
+          <%= link_to 'new post', new_entry_path %> |
+        <% end %>
         logged in as <%= link_to current_user.login,
                                           :controller => 'users',
                                           :action => 'show',
@@ -72,7 +76,7 @@
 
 <br clear="all">
 <div class="the_bottom">
-  the footer
+  Want some <a href="http://github.com/txpost/intronet">source code</a>?
 </div>
 
 </body>

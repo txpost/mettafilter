@@ -1,4 +1,4 @@
-<% if current_user and current_user.id == @user.id %>
+<% if permitted_to? :edit, @user %>
   <%= link_to 'edit profile', edit_user_path(@user) %>
 <% end %>
 
@@ -11,7 +11,7 @@
   <%=h @user.login %>
   <br />
   
-  <% if current_user and current_user.login == @user.login %>
+  <% if permitted_to? :edit, @user %>
     <%= sanitize_html(@user.email) %>
   <% end %>
   <br /><br />

@@ -1,7 +1,5 @@
 class TagsController < ApplicationController
   layout 'entries'
-  
-  before_filter :authorize, :except => [:index, :show]
 
   def index
     @tags = Entry.tag_counts(:order => 'name').sort_by { |tag| tag.name.downcase }

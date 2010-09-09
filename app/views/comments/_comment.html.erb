@@ -7,14 +7,14 @@
                                             :action => 'show',
                                             :params => { :user_name => comment.created_by } %> 
   at <%= h(comment.created_at.strftime("%I:%M%P on %B %d")) %>
-  <% if @current_user %>
+  <% if permitted_to? :add_favorite %>
     |
     <% flag = false %>
     <% if @favcomed_by.blank? %>
       <span id="comment_<%= comment.id %>">
         <%= link_to_remote "+", :url => { :action => 'add_favcom',
-                                :comment_id => comment.id,
-                                :user_id => @current_user.id },
+                                :id => comment.id,
+                                :user_id => current_user.id },
                                 :update => 'comment_' + comment.id.to_s %>
       </span>
       <% flag = true %>
@@ -31,8 +31,8 @@
     <% if flag == false %>
       <span id="comment_<%= comment.id %>">
         <%= link_to_remote "+", :url => { :action => 'add_favcom',
-                                :comment_id => comment.id,
-                                :user_id => @current_user.id },
+                                :id => comment.id,
+                                :user_id => current_user.id },
                                 :update => 'comment_' + comment.id.to_s %>
       </span>      
     <% end %>

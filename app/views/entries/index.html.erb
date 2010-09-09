@@ -43,7 +43,7 @@
             <% if flag == false %>
             <span id="favorite_<%= entry.id %>">
               <%= link_to_remote "+",  :url => { :action => 'add_favorite',
-                                       :entry_id => entry.id,
+                                       :id => entry.id,
                                        :user_id => current_user.id },
                                        :update => 'favorite_' + entry.id.to_s %>
             </span>

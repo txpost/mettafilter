@@ -14,8 +14,10 @@
   at <%= h(@entry.created_at.strftime("%I:%M%P")) %> |
   
   
-  <% if current_user and current_user.login == admin.login %>
+  <% if permitted_to? :edit, @entry %>
     <%= link_to 'edit', edit_entry_path(@entry) %> |
+  <% end %>
+  <% if permitted_to? :destroy, @entry %>
     <%= link_to 'remove', @entry, :method => :delete, :confirm => "Are you sure?" %> |
   <% end %>
   
@@ -29,7 +31,7 @@
     <% end %>
   <% end %>
   
-  <% if current_user %>
+  <% if permitted_to? :add_favorite, @entry %>
     |
     <% flag = false %>
     <% for favorite in @favored_by %>
@@ -43,7 +45,7 @@
     <% if flag == false %>
       <span id="favorite_<%= @entry.id %>">
         <%= link_to_remote "+", :url => { :action => 'add_favorite',
-                                :entry_id => @entry.id,
+                                :id => @entry.id,
                                 :user_id => current_user.id },
                                 :update => 'favorite_' + @entry.id.to_s %>
       </span>      
@@ -58,8 +60,8 @@
   	<%= render :partial => @entry.comments %>
   <% end %>
   
-  <div class="new_comments">
-    <% if current_user %>
+  <% if permitted_to? :create, Comment.new %>
+    <div class="new_comments">
       <% form_for [@entry, Comment.new], :html => { :id => 'new_comment' } do |f| %>
       	
         <%= f.label :body, "New Comment" %><br />
@@ -67,10 +69,9 @@
       	
       	<%= f.submit 'add comment' %>
       	<%= f.hidden_field :created_by, :value => current_user.login %>
-      <% end %>
-    <% end %>
-    
-  </div>
+      <% end %>   
+    </div>
+  <% end %>
   
 </div>
   

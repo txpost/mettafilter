@@ -35,9 +35,15 @@
   <div class="fpp_footer">
     Upload a pic for your profile page.
   </div>
-  <%= f.file_field :photo %><br >
+  <%= f.file_field :photo %><br />
   <br />
 
+  <% if current_user %>
+    <%= f.label :role %><br />
+    <%= f.collection_select :role, User::ROLES, :to_s, :humanize %><br />
+    <br />
+  <% end %>
+  
   <%= f.submit 'update' %>
 
 <% end %>

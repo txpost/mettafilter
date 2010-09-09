@@ -20,7 +20,8 @@ class User < ActiveRecord::Base
                   :full_name, 
                   :about, 
                   :email,
-                  :openid_identifier
+                  :openid_identifier,
+                  :role
                   
   attr_accessor :password_confirmation
   
@@ -39,6 +40,12 @@ class User < ActiveRecord::Base
   def deliver_welcome!
     reset_perishable_token!
     Notifier.deliver_welcome(self)
+  end
+  
+  ROLES = %w[admin user guest]
+  
+  def role_symbols
+    [role.to_sym]
   end
   
 end

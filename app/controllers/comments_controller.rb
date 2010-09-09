@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   layout 'entries'
-  before_filter :authorize, :except => [:index, :show]
+  filter_resource_access
   
   uses_tiny_mce :options => { :theme => 'advanced', 
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',

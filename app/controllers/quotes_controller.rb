@@ -1,6 +1,5 @@
 class QuotesController < ApplicationController
   layout 'entries'
-  before_filter :authorize, :except => [:index, :show]
   
   def index
     @entries = Entry.paginate :page => params[:page], 

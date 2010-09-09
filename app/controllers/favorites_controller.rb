@@ -1,6 +1,5 @@
 class FavoritesController < ApplicationController
   layout 'entries'
-  before_filter :authorize, :except => [:index, :show]
   
   # GET /favorites
   # GET /favorites.xml

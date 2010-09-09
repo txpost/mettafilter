@@ -1,14 +1,7 @@
 class UsersController < ApplicationController
   layout 'entries'
-  before_filter :authorize, :except => [:new, 
-                                        :create, 
-                                        :show, 
-                                        :posts, 
-                                        :comments, 
-                                        :favorites, 
-                                        :favcoms, 
-                                        :resend_activation]
   before_filter :user
+  filter_resource_access
   uses_tiny_mce :options => { :theme => 'advanced', 
                               :theme_advanced_buttons1 => 'bold,italic,link,unlink',
                               :theme_advanced_buttons2 => '',
@@ -124,6 +117,10 @@ class UsersController < ApplicationController
   end
   
   protected
+  
+  def load_user
+    @user = User.find(:first, :conditions => ["login = ?", params[:user_name]])    
+  end
   
   def user
     @user = User.find(:first, :conditions => ["login = ?", params[:user_name]])
