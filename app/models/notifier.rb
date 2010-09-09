@@ -9,7 +9,7 @@ class Notifier < ActionMailer::Base
   
   def welcome(user)
     subject     "Welcome to the site!"
-    from        "trev@mettafilter.com"
+    from        "trev@theintronet.com"
     recipients  user.email
     sent_on     Time.now
     body        :root_url => root_url

@@ -2,7 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  before_filter :set_user_time_zone, :sidebar
+  before_filter :set_user_time_zone, :sidebar, :mailer_set_url_options
   helper :all # include all helpers, all the time
   helper_method :current_user, :current_user_session
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -56,5 +56,8 @@ class ApplicationController < ActionController::Base
     @user = User.find_by_id(session[:user_id])
     Time.zone = @user.time_zone unless @user.blank?
   end
+  
+  def mailer_set_url_options
+    ActionMailer::Base.default_url_options[:host] = request.host_with_port
   
 end
