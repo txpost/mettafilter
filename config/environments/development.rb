@@ -22,7 +22,7 @@ config.action_mailer.smtp_settings = {
   :address => 'smtp.gmail.com',
   :port => 587,
   :authentication => :plain,
-  :domain => 'myapp.com',
+  :domain => 'radiant-ocean-80.heroku.com',
   :user_name => 'metatrev@gmail.com',
   :password => '4working'
 }
