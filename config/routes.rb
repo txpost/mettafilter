@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :favcoms
   map.resources :favorites
   map.resources :tags
+  map.resources :password_resets
   map.connect "users/posts", :controller => 'users', :action => 'posts'
   map.connect "users/comments", :controller => 'users', :action => 'comments'
   map.connect "users/favorites", :controller => 'users', :action => 'favorites'

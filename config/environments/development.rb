@@ -26,4 +26,4 @@ config.action_mailer.smtp_settings = {
   :user_name => 'metatrev@gmail.com',
   :password => '4working'
 }
-config.action_mailer.default_url_options = { :host => "radiant-ocean-80.heroku.com" }
+config.action_mailer.default_url_options = { :host => "localhost:3000" }

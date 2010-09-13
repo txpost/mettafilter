@@ -1,0 +1,20 @@
+<h2>Change My Password</h2>
+
+<% form_for @user, :url => password_reset_path, :method => :put do |f| %>
+  <%= f.error_messages %>
+  <table>
+    <tr>
+      <td class="form_label"><%= f.label :password, 'password' %></td>
+      <td><%= f.password_field :password, :size => 40 %></td>
+    </tr>
+    <tr>
+      <td class="form_label"><%= f.label :password_confirmation, 'confirm password' %></td>
+      <td><%= f.password_field :password_confirmation, :size => 40 %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.submit 'update my password and log me in' %> </td>
+    </tr>
+  </table>
+  
+<% end %>

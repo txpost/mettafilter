@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>Internet for Introverts</title>
+  <title>"people of zee wurl, relax"</title>
   <%= stylesheet_link_tag 'scaffold' %>
 	<%= auto_discovery_link_tag :atom, entries_path(:atom) %>
 	<%= javascript_include_tag :all %>
@@ -18,7 +18,7 @@
 <div class="container">
     
   <div class="header">
-    <%= link_to 'The Intronet', :controller => 'entries', :action => 'index' %>
+    <%= link_to 'Yogi News', root_url %>
     
     <span class="fpp_footer">
     | <%= link_to 'questions', :controller => 'questions', :action => 'index' %>
@@ -28,7 +28,7 @@
   </div>
 
   <div class="main">
-    <%= link_to 'home', entries_path %> |
+    <%= link_to 'home', root_url %> |
       <% if current_user %>
         <% if permitted_to? :new, Entry.new %>
           <%= link_to 'new post', new_entry_path %> |
@@ -41,7 +41,7 @@
         
       <% else %>
         <%= link_to 'login', login_path %> |
-        <%= link_to 'register', new_user_path %>
+        <%= link_to 'signup', new_user_path %>
       <% end %>
     <br /><br />
 

@@ -9,11 +9,6 @@
   <% end %>
   
   <%=h @user.login %>
-  <br />
-  
-  <% if permitted_to? :edit, @user %>
-    <%= sanitize_html(@user.email) %>
-  <% end %>
   <br /><br />
   
   <% unless @user.photo_file_name.blank? %>

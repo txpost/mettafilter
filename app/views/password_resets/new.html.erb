@@ -1,0 +1,18 @@
+<h2>Forgot Password</h2>
+
+<div class="entry_container">
+
+  <% form_tag password_resets_path do %>
+    <table>
+      <tr>
+        <td class="form_label">email</td>
+        <td><%= text_field_tag "email" %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><%= submit_tag "reset my password" %></td>
+      </tr>
+    </table>
+  <% end %>
+
+</div>
