@@ -1,7 +1,7 @@
 class EntriesController < ApplicationController
   filter_resource_access
   uses_tiny_mce :options => { :theme => 'advanced', 
-                              :theme_advanced_buttons1 => 'bold,italic,link,unlink',
+                              :theme_advanced_buttons1 => 'bold,italic,link,unlink,numlist,bullist',
                               :theme_advanced_buttons2 => '',
                               :theme_advanced_buttons3 => '',
                               :relative_urls => false,

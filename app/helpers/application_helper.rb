@@ -3,7 +3,7 @@ module ApplicationHelper
   
   include TagsHelper
   
-  def sanitize_html( html, okTags='a href, b, i, strong, em' )
+  def sanitize_html( html, okTags='a href, b, i, strong, em, p, br, ul, ol, li' )
     # no closing tag necessary for these
     soloTags = ["br","hr"]
 
